@@ -1,9 +1,12 @@
 #include <iostream>
 #include <vector>
-
-using namespace std;
+#include <fstream>
 
 extern struct option longopts[];
+
+class clade;
+
+clade *read_trees(std::istream& input_file);
 
 struct input_parameters {
 public:	

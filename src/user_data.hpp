@@ -6,6 +6,6 @@ struct input_parameters;
 
 class user_data {
 public:
-    void read_datafiles(const input_parameters &my_input_parameters);
-    void read_speciestree(const input_parameters &my_input_parameters);
+    void read_datafile(const input_parameters &my_input_parameters);
+    void read_inputfile(const input_parameters &my_input_parameters);
 };

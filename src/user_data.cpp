@@ -5,16 +5,16 @@
 #include "user_data.hpp"
 #include "io.hpp"
 
-void user_data::read_speciestree(const input_parameters &my_input_parameters) {
-
+void user_data::read_inputfile(const input_parameters &my_input_parameters) {
+    //This function calls the file parsers, which are in io.cpp
 }
 
-void user_data::read_datafiles(const input_parameters &my_input_parameters)
+void user_data::read_datafile(const input_parameters &my_input_parameters)
 {
     /* -i */
     if (!my_input_parameters.input_file_path.empty()) {
-        // Populates (pointer to) vector of gene family instances, max_family_size and max_root_family_size (last two passed by reference)
-        read_speciestree(my_input_parameters);
+        // Populates (pointer to) species tree, vector of gene trees, vector of trait values 
+        read_inputfile(my_input_parameters);
     }
 
 }
