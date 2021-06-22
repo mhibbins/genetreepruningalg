@@ -6,7 +6,7 @@ extern struct option longopts[];
 
 class clade;
 
-clade *read_trees(std::istream& input_file);
+clade *read_data(std::istream& input_file);
 
 struct input_parameters {
 public:	
