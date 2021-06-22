@@ -13,12 +13,12 @@ struct option longopts[] = {
 clade* read_data(std::istream& input_file){ //parses trees from input file 
 
   std::string line;
+  std::string header;
 
   while (getline(input_file, line)) {
 
     if (line.empty()) continue;
-    std::string header;
-
+    
     if (line.find("sptree") != std::string::npos){
       header = "sptree";
     }
