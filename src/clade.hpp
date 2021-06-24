@@ -23,7 +23,7 @@ using cladefunc = std::function<void(const clade*)>;
 */
 class clade {
 
-    friend clade* parse_newick(std::string newick_string, bool parse_lambdas); // allows newick_parser to set parameter values
+    friend clade* parse_newick(std::string newick_string); // allows newick_parser to set parameter values
 
 private:
     clade *_p_parent; // needs to be pointer; instance creates infinite loop
@@ -120,7 +120,7 @@ using cladevector = std::vector<const clade *>;
 
 std::string clade_index_or_name(const clade* node, const cladevector& order);
 
-clade* parse_newick(std::string newick_string, bool parse_lambdas);
-inline clade* parse_newick(std::string newick_string) { return parse_newick(newick_string, false); }
+clade* parse_newick(std::string newick_string);
+inline clade* parse_newick(std::string newick_string) { return parse_newick(newick_string); }
 
 #endif

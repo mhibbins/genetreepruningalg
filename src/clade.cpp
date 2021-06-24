@@ -287,7 +287,7 @@ void clade::apply_prefix_order(const cladefunc& f) const {
     }
 }
 
-clade* parse_newick(std::string newick_string, bool parse_to_lambdas) {
+clade* parse_newick(std::string newick_string) {
 
     std::regex tokenizer("\\(|\\)|[^\\s\\(\\)\\:\\;\\,]+|\\:[+-]?[0-9]*\\.?[0-9]+([eE][+-]?[0-9]+)?|\\,|\\;");
 
@@ -304,8 +304,7 @@ clade* parse_newick(std::string newick_string, bool parse_to_lambdas) {
     std::sregex_iterator regex_it(newick_string.begin(), newick_string.end(), tokenizer);
     std::sregex_iterator regex_it_end;
     clade* p_root_clade = new_clade(NULL);
-    p_root_clade->is_lambda_clade = parse_to_lambdas; // if user does not provide lambda for root, we need to make the root specifically a lambda clade if we are parsing to lambdas
-
+    
     clade* p_current_clade = p_root_clade; // current_clade starts as the root
 
     // The first element below is empty b/c I initialized it in the class body
@@ -360,19 +359,8 @@ clade* parse_newick(std::string newick_string, bool parse_to_lambdas) {
         else if (regex_it->str()[0] == ':') {
             /* Checking ':' regex */
             // cout << "Found :: " << regex_it->str() << "\n";
-
-            if (parse_to_lambdas)
-            {
-                int ind = strtol(regex_it->str().substr(1).c_str(), nullptr, 0);
-                p_current_clade->_lambda_index = ind;
-                p_current_clade->is_lambda_clade = true;
+            p_current_clade->_branch_length = atof(regex_it->str().substr(1).c_str()); // atof() converts string into float
             }
-            else
-            {
-                p_current_clade->_branch_length = atof(regex_it->str().substr(1).c_str()); // atof() converts string into float
-                p_current_clade->is_lambda_clade = false;
-            }
-        }
 
         /* Reading taxon name */
         else {

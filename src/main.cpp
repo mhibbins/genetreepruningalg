@@ -41,11 +41,12 @@ input_parameters read_arguments(int argc, char *const argv[])
 
 
 int main(int argc, char *const argv[]){ 
-
+    
     input_parameters user_input = read_arguments(argc, argv);
     user_data data;
     data.read_datafile(user_input);
-    
+    //Need to figure out input to read_data
+    //clade* sptree = read_data(user_input);
     
     //std::cout << "If you see this, the code runs\n";
 
