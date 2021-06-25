@@ -6,6 +6,7 @@
 
 #include "user_data.hpp"
 #include "io.hpp"
+#include "clade.hpp"
 
 input_parameters read_arguments(int argc, char *const argv[])
 {
@@ -43,12 +44,15 @@ input_parameters read_arguments(int argc, char *const argv[])
 int main(int argc, char *const argv[]){ 
     
     input_parameters user_input = read_arguments(argc, argv);
+    std::ifstream input_file(user_input.input_file_path);
+    //clade* sptree = read_data(input_file);
     user_data data;
     data.read_datafile(user_input);
     //Need to figure out input to read_data
-    //clade* sptree = read_data(user_input);
-    
+    clade* sptree = read_data(input_file);
+    //std::string sptree_string = clade_to_string(sptree);
     //std::cout << "If you see this, the code runs\n";
-
+    std::cout << sptree;
+    //std::cout << sptree_string;
     return 0;
 }

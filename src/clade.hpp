@@ -24,6 +24,7 @@ using cladefunc = std::function<void(const clade*)>;
 class clade {
 
     friend clade* parse_newick(std::string newick_string); // allows newick_parser to set parameter values
+    //friend std::ostream& operator<<(std::ostream &out, clade* my_clade);
 
 private:
     clade *_p_parent; // needs to be pointer; instance creates infinite loop
@@ -42,7 +43,8 @@ private:
 public:
     typedef std::vector<const clade*>::const_iterator reverse_level_iterator;
     typedef std::vector<clade*>::const_iterator descendant_iterator;
-
+    
+    
     /* methods */
     clade() : _p_parent(NULL), _branch_length(0), _lambda_index(0), is_lambda_clade(false) {} // basic constructor
 
