@@ -1,5 +1,5 @@
-#ifndef clade_h
-#define clade_h
+#ifndef clade_hpp
+#define clade_hpp
 
 #include <map>
 #include <stack>
@@ -123,6 +123,6 @@ using cladevector = std::vector<const clade *>;
 std::string clade_index_or_name(const clade* node, const cladevector& order);
 
 clade* parse_newick(std::string newick_string);
-inline clade* parse_newick(std::string newick_string) { return parse_newick(newick_string); }
+//inline clade* parse_newick(std::string newick_string) { return parse_newick(newick_string); }
 
 #endif

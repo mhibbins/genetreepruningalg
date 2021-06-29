@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <tuple>
 
 #include <getopt.h>
 
@@ -49,10 +50,15 @@ int main(int argc, char *const argv[]){
     user_data data;
     data.read_datafile(user_input);
     //Need to figure out input to read_data
-    clade* sptree = read_data(input_file);
-    //std::string sptree_string = clade_to_string(sptree);
+    auto [sptree, genetree] = read_data(input_file);
+
+
+    //Print statements for debugging
+    std::string sptree_string = clade_to_string(sptree);
+    std::string genetree_string = clade_to_string(sptree);
     //std::cout << "If you see this, the code runs\n";
-    std::cout << sptree;
-    //std::cout << sptree_string;
+    //std::cout << sptree;
+    std::cout << sptree_string << genetree_string;
+
     return 0;
 }

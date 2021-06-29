@@ -4,6 +4,7 @@
 #include <getopt.h>
 #include <fstream>
 #include <sstream>
+#include <tuple>
 
 #include "io.hpp"
 #include "clade.hpp"
@@ -12,23 +13,24 @@ struct option longopts[] = {
   { "infile", required_argument, NULL, 'i' }
 };
 
-// std::ostream& operator<<(std::ostream &out, clade* my_clade) {
-//   out << my_clade->_taxon_name;
-//   return out;
-// }
+std::ostream& operator<<(std::ostream &out, clade* my_clade) {
+  out << my_clade->is_root();
+  return out;
+}
 
-// std::string clade_to_string(clade* my_clade) {
-//   std::stringstream ss;
-//   ss << my_clade;
-//   return ss.str();
-// }
+std::string clade_to_string(clade* my_clade) {
+  std::stringstream ss;
+  ss << my_clade;
+  return ss.str();
+}
 
-clade* read_data(std::istream& input_file){ //parses trees from input file 
+std::tuple<clade*, clade*> read_data(std::istream& input_file){ //parses trees from input file 
 
   std::string line;
   std::string header;
 
   clade* sptree;
+  clade* genetree;
 
   std::vector<std::string> lines;
 
@@ -54,7 +56,13 @@ clade* read_data(std::istream& input_file){ //parses trees from input file
         sptree = parse_newick(line);
       }
     }
+
+    if (header == "genetrees") {
+      if (line.rfind("(", 0) == 0){
+        genetree = parse_newick(line);
+      }
+    }
   
   }
-    return sptree;  
+    return {sptree, genetree};  
 }
