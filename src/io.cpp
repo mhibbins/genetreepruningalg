@@ -8,6 +8,7 @@
 
 #include "io.hpp"
 #include "clade.hpp"
+#include "traits.hpp"
 
 struct option longopts[] = {
   { "infile", required_argument, NULL, 'i' }
@@ -24,6 +25,19 @@ std::string clade_to_string(clade* my_clade) {
   return ss.str();
 }
 
+std::vector<std::string> simple_tokenizer(std::string s) {
+
+  std::stringstream ss(s);
+  std::string word;
+  std::vector<std::string> line_vector;
+
+  while (ss >> word) {
+    line_vector.push_back(word);
+  }
+
+  return line_vector;
+}
+
 std::tuple<clade*, clade*> read_data(std::istream& input_file){ //parses trees from input file 
 
   std::string line;
@@ -31,6 +45,7 @@ std::tuple<clade*, clade*> read_data(std::istream& input_file){ //parses trees f
 
   clade* sptree;
   clade* genetree;
+  traits* species_traits;
 
   std::vector<std::string> lines;
 
@@ -62,6 +77,13 @@ std::tuple<clade*, clade*> read_data(std::istream& input_file){ //parses trees f
         genetree = parse_newick(line);
       }
     }
+
+    // if (header == "traits") {
+    //   if (line.rfind("set", 0) == 0){
+    //     auto [sp, trait] = parse_traits(line);
+    //   }
+
+    // }
   
   }
     return {sptree, genetree};  
