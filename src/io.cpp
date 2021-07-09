@@ -45,14 +45,10 @@ std::tuple<clade*, clade*> read_data(std::istream& input_file){ //parses trees f
 
   clade* sptree;
   clade* genetree;
-  traits* species_traits;
-
-  std::vector<std::string> lines;
 
   while (getline(input_file, line)) {
 
     if (line.empty()) continue;
-    lines.push_back(line);
     
     if (line.find("sptree") != std::string::npos){
       header = "sptree";
@@ -80,9 +76,9 @@ std::tuple<clade*, clade*> read_data(std::istream& input_file){ //parses trees f
 
     if (header == "traits") {
       if (line.rfind("set", 0) == 0){
-        auto [sp, trait] = parse_traits(line);
+        traits species_traits;
+        species_traits.parse_traits(line);
       }
-
     }
   
   }

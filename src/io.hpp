@@ -1,3 +1,6 @@
+#ifndef io_hpp
+#define io_hpp
+
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -19,3 +22,4 @@ public:
     bool help = false;
     //void check_input();
 };
+#endif

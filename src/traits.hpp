@@ -8,13 +8,27 @@
 
 #include "clade.hpp"
 
+class traits;
+
 class traits {
 private:
-    std::map<std::string, int> _trait_map;
+    std::string _species;
+    double _trait;
+    std::map<std::string, double> _trait_map;
 public:
-    void set_species_trait(std::string species, int trait_value) {
+
+    traits(): _species(NULL), _trait(0) {}; //constructor for traits
+    ~traits(); //destructor
+
+    void set_species(std::string sp) {
+        _species = sp;
+    }
+    void set_trait(double tr) {
+        _trait = tr;
+    }
+    void set_species_trait(std::string species, double trait_value) {
         _trait_map[species] = trait_value;
     };
-    std::tuple<std::string, double> parse_traits(std::string trait_string);
+    void parse_traits(std::string trait_string);
 };
 #endif

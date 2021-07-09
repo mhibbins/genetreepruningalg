@@ -8,6 +8,7 @@
 #include "user_data.hpp"
 #include "io.hpp"
 #include "clade.hpp"
+#include "traits.hpp"
 
 input_parameters read_arguments(int argc, char *const argv[])
 {
@@ -31,7 +32,6 @@ int main(int argc, char *const argv[]){
     data.read_datafile(user_input);
     //Need to figure out input to read_data
     auto [sptree, genetree] = read_data(input_file);
-
 
     //Print statements for debugging
     std::string sptree_string = clade_to_string(sptree);
