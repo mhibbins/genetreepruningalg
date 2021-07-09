@@ -11,14 +11,12 @@
 class traits;
 
 class traits {
+    friend traits parse_traits(std::string trait_string); //allows parse_traits to set param values
 private:
     std::string _species;
     double _trait;
     std::map<std::string, double> _trait_map;
 public:
-
-    traits(): _species(NULL), _trait(0) {}; //constructor for traits
-    ~traits(); //destructor
 
     void set_species(std::string sp) {
         _species = sp;

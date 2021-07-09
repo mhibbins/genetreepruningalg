@@ -18,5 +18,3 @@ void traits::parse_traits(std::string trait_string) {
     species_traits.set_species_trait(species_traits._species, species_traits._trait);
 
 };
-
-traits::~traits() {}; //empty destructor
