@@ -78,12 +78,12 @@ std::tuple<clade*, clade*> read_data(std::istream& input_file){ //parses trees f
       }
     }
 
-    // if (header == "traits") {
-    //   if (line.rfind("set", 0) == 0){
-    //     auto [sp, trait] = parse_traits(line);
-    //   }
+    if (header == "traits") {
+      if (line.rfind("set", 0) == 0){
+        auto [sp, trait] = parse_traits(line);
+      }
 
-    // }
+    }
   
   }
     return {sptree, genetree};  

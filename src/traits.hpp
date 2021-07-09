@@ -1,3 +1,6 @@
+#ifndef traits_hpp
+#define traits_hpp
+
 #include <string>
 #include <map>
 #include <vector>
@@ -11,6 +14,7 @@ private:
 public:
     void set_species_trait(std::string species, int trait_value) {
         _trait_map[species] = trait_value;
-    }
+    };
     std::tuple<std::string, double> parse_traits(std::string trait_string);
 };
+#endif
