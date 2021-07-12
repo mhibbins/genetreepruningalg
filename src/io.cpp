@@ -45,6 +45,7 @@ std::tuple<clade*, clade*, std::vector<traits*>> read_data(std::istream& input_f
 
   clade* sptree;
   clade* genetree;
+  traits* species_trait;
   std::vector<traits*> species_traits;
 
   while (getline(input_file, line)) {
@@ -77,12 +78,11 @@ std::tuple<clade*, clade*, std::vector<traits*>> read_data(std::istream& input_f
 
     if (header == "traits") {
       if (line.rfind("set", 0) == 0){
-        traits* species_trait;
         species_trait = species_trait->parse_traits(line);
         species_traits.push_back(species_trait);
       }
     }
   
   }
-    return {sptree, genetree, species_traits};  
+  return {sptree, genetree, species_traits};  
 }

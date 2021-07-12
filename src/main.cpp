@@ -43,9 +43,7 @@ int main(int argc, char *const argv[]){
     //std::cout << "If you see this, the code runs\n";
     //std::cout << sptree;
     std::cout << sptree_string << std::endl << genetree_string << std::endl;*/
-    traits* last_trait = species_traits[3];
-    double trait_val = last_trait->print_trait_val();
-    std::cout << trait_val << std::endl;
+    //std::cout << species_traits.size();
 
     return 0;
 }
