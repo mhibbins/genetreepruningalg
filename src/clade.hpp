@@ -56,7 +56,7 @@ public:
     ~clade(); // destructor
 
     //! return the parent clade, NULL if there is none
-    const clade *get_parent() const;
+    const clade* get_parent() const;
 
     //! Add the descendant clade. Used when constructing a tree
     void add_descendant(clade *p_descendant);

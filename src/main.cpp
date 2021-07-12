@@ -28,17 +28,24 @@ int main(int argc, char *const argv[]){
     input_parameters user_input = read_arguments(argc, argv);
     std::ifstream input_file(user_input.input_file_path);
     //clade* sptree = read_data(input_file);
+    if (user_input.help == true) {
+        std::cout << "No input file specified" << std::endl;
+        return 0;
+    }
     user_data data;
     data.read_datafile(user_input);
     //Need to figure out input to read_data
-    auto [sptree, genetree] = read_data(input_file);
+    auto [sptree, genetree, species_traits] = read_data(input_file);
 
-    //Print statements for debugging
+    /*Print statements for debugging
     std::string sptree_string = clade_to_string(sptree);
     std::string genetree_string = clade_to_string(genetree);
     //std::cout << "If you see this, the code runs\n";
     //std::cout << sptree;
-    std::cout << sptree_string << std::endl << genetree_string << std::endl;
+    std::cout << sptree_string << std::endl << genetree_string << std::endl;*/
+    traits* last_trait = species_traits[3];
+    double trait_val = last_trait->print_trait_val();
+    std::cout << trait_val << std::endl;
 
     return 0;
 }
