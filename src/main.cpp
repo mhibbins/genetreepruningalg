@@ -27,14 +27,13 @@ int main(int argc, char *const argv[]){
     
     input_parameters user_input = read_arguments(argc, argv);
     std::ifstream input_file(user_input.input_file_path);
-    //clade* sptree = read_data(input_file);
+    
     if (user_input.help == true) {
         std::cout << "No input file specified" << std::endl;
         return 0;
     }
     user_data data;
     data.read_datafile(user_input);
-    //Need to figure out input to read_data
     auto [sptree, genetree, species_traits] = read_data(input_file);
 
     /*Print statements for debugging
