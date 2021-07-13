@@ -35,14 +35,10 @@ int main(int argc, char *const argv[]){
     user_data data;
     data.read_datafile(user_input);
     auto [sptree, genetree, species_traits] = read_data(input_file);
-
-    /*Print statements for debugging
-    std::string sptree_string = clade_to_string(sptree);
-    std::string genetree_string = clade_to_string(genetree);
-    //std::cout << "If you see this, the code runs\n";
-    //std::cout << sptree;
-    std::cout << sptree_string << std::endl << genetree_string << std::endl;*/
-    std::cout << species_traits.size();
+    std::vector<double> sptree_branch_lengths = sptree->get_branch_lengths();
+    
+    for (auto it = sptree_branch_lengths.begin(); it !=sptree_branch_lengths.end(); ++it)
+        std::cout << ' ' << *it << std::endl;
 
     return 0;
 }
