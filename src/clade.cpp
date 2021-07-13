@@ -243,26 +243,13 @@ std::vector<double> clade::get_branch_lengths() const
 
 std::map<std::string, double> clade::get_branch_length_map() const
 {
-    std::vector<double> lengths;
-    std::vector<std::string> labels;
     std::map<std::string, double> branch_length_map;
 
-    auto branch_length_func = [&lengths](const clade* c) { 
-        if (c->get_branch_length() > 0.0)
-            lengths.push_back(c->get_branch_length()); 
+    auto branch_length_func = [&branch_length_map](const clade* c) {
+        branch_length_map[c->get_taxon_name()] = c->get_branch_length();
     };
-
-    auto node_label_func = [&labels](const clade* c) {
-        labels.push_back(c->get_taxon_name());
-    };    
-
+ 
     apply_prefix_order(branch_length_func);
-    apply_prefix_order(node_label_func);
-
-    for (size_t i = 0; i < lengths.size(); ++i) {
-        branch_length_map[labels[i]] = lengths[i];
-    };
-
 
     return branch_length_map;
 }
