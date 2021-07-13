@@ -230,12 +230,12 @@ std::string clade_index_or_name(const clade* node, const cladevector& order)
     }
 }
 
-std::set<double> clade::get_branch_lengths() const
+std::vector<double> clade::get_branch_lengths() const
 {
-    std::set<double> result;
+    std::vector<double> result;
     auto branch_length_func = [&result](const clade* c) { 
         if (c->get_branch_length() > 0.0)
-            result.insert(c->get_branch_length()); 
+            result.push_back(c->get_branch_length()); 
     };
     apply_prefix_order(branch_length_func);
     return result;

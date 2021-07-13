@@ -88,7 +88,7 @@ public:
     std::map<std::string, int> get_lambda_index_map();
 
     //! Return a unique list of all brnach lengths for this clade and its descendants
-    std::set<double> get_branch_lengths() const;
+    std::vector<double> get_branch_lengths() const;
 
     /// Checks that the list of node names of the lambda tree matches this one
     /// throw an exception if not
