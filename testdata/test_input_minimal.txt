@@ -1,6 +1,6 @@
 #NEXUS 
 begin sptree;
-(1:4.0,(2:0.6,(3:0.3,4:0.3):0.3):3.4);
+(sp1:4.0,(sp2:0.6,(sp3:0.3,sp4:0.3):0.3):3.4);
 end;
 
 begin genetrees;
