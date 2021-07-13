@@ -25,20 +25,19 @@ input_parameters read_arguments(int argc, char *const argv[])
 
 int main(int argc, char *const argv[]){ 
     
-    input_parameters user_input = read_arguments(argc, argv);
-    std::ifstream input_file(user_input.input_file_path);
+    input_parameters user_input = read_arguments(argc, argv); //reads command line arguments
+    std::ifstream input_file(user_input.input_file_path); //gets input file argument
     
-    if (user_input.help == true) {
+    if (user_input.help == true) { //checks if input file is specified 
         std::cout << "No input file specified" << std::endl;
         return 0;
     }
-    user_data data;
-    data.read_datafile(user_input);
-    auto [sptree, genetree, species_traits] = read_data(input_file);
-    std::vector<double> sptree_branch_lengths = sptree->get_branch_lengths();
-    
-    for (auto it = sptree_branch_lengths.begin(); it !=sptree_branch_lengths.end(); ++it)
-        std::cout << ' ' << *it << std::endl;
+
+    auto [sptree, genetree, species_traits] = read_data(input_file); //parses input file 
+    std::map<std::string, double> sptree_branch_length_map = sptree->get_branch_length_map(); //gets species tree branch lengths 
+
+    for(auto const &pair: sptree_branch_length_map) {
+        std::cout << "{" << pair.first << ": " << pair.second << "}" << std::endl;}
 
     return 0;
 }
