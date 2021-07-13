@@ -14,15 +14,8 @@ class traits {
     double _trait;
     std::map<std::string, double> _trait_map;
 public:
-
-    void set_species(std::string sp);
-    
-    void set_trait(double tr);
-
-    void set_species_trait(std::string species, double trait_value);
-
+    traits(std::string new_species, double new_trait);
     double print_trait_val() const;
-
     int print_trait_map_size() const;
 };
 

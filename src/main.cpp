@@ -42,7 +42,7 @@ int main(int argc, char *const argv[]){
     //std::cout << "If you see this, the code runs\n";
     //std::cout << sptree;
     std::cout << sptree_string << std::endl << genetree_string << std::endl;*/
-    //std::cout << species_traits.size();
+    std::cout << species_traits.size();
 
     return 0;
 }
