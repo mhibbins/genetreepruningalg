@@ -241,17 +241,20 @@ std::vector<double> clade::get_branch_lengths() const
     return result;
 }
 
-std::map<std::string, double> clade::get_branch_length_map() const
+std::set<double> clade::get_speciation_times() const
 {
-    std::map<std::string, double> branch_length_map;
+    std::set<double> sp_time_set;
 
-    auto branch_length_func = [&branch_length_map](const clade* c) {
-        branch_length_map[c->get_taxon_name()] = c->get_branch_length();
+    auto sp_time_func = [&sp_time_set](const clade* c) {
+
+        if (c->is_leaf() == true) {
+            sp_time_set.insert(c->get_branch_length());
+        };
     };
  
-    apply_prefix_order(branch_length_func);
+    apply_prefix_order(sp_time_func);
 
-    return branch_length_map;
+    return sp_time_set;
 }
 
 void clade::validate_lambda_tree(const clade* p_lambda_tree) const

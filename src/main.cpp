@@ -34,10 +34,10 @@ int main(int argc, char *const argv[]){
     }
 
     auto [sptree, genetree, species_traits] = read_data(input_file); //parses input file 
-    std::map<std::string, double> sptree_branch_length_map = sptree->get_branch_length_map(); //gets species tree branch lengths 
+    std::set<double> sp_times = sptree->get_speciation_times(); //gets species tree branch lengths 
 
-    for(auto const &pair: sptree_branch_length_map) {
-        std::cout << "{" << pair.first << ": " << pair.second << "}" << std::endl;}
+    for(auto it = sp_times.begin(); it != sp_times.end(); ++it) {
+        std::cout << ' ' << *it << std::endl;}
 
     return 0;
 }

@@ -89,7 +89,7 @@ public:
 
     //! Return a unique list of all brnach lengths for this clade and its descendants
     std::vector<double> get_branch_lengths() const;
-    std::map<std::string, double> get_branch_length_map() const; //returns node labels with branch lengths
+    std::set<double> get_speciation_times() const; //returns node labels with branch lengths
 
     /// Checks that the list of node names of the lambda tree matches this one
     /// throw an exception if not
