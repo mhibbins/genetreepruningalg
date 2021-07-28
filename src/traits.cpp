@@ -2,6 +2,7 @@
 #include <map>
 #include <vector>
 #include <tuple>
+#include <algorithm>
 
 #include "io.hpp"
 #include "traits.hpp"
@@ -11,10 +12,6 @@ traits::traits(std::string new_species, double new_trait) {
     _trait = new_trait;
     _trait_map[new_species] = new_trait;
 }
-
-double traits::print_trait_val() const {return _trait;}
-    
-int traits::print_trait_map_size() const {return _trait_map.size();}
 
 traits* parse_traits(std::string trait_string) {
 
@@ -27,3 +24,27 @@ traits* parse_traits(std::string trait_string) {
     return species_traits;
 
 };
+
+double traits::get_trait_val() const {return _trait;}
+std::string traits::get_species() const {return _species;}
+int traits::print_trait_map_size() const {return _trait_map.size();}
+
+std::pair<double, double> get_trait_range(std::vector<traits*> t_vector) {
+    
+    std::pair<double, double> trait_range;
+    std::vector<double> trait_values;
+
+    if (!t_vector.empty()){
+        for (int i=0; i < t_vector.size(); i++){
+            traits* trait = t_vector[i];
+                trait_values.push_back(trait->get_trait_val());
+        }
+    }
+
+    trait_range.first = trait_values[0];
+    trait_range.second = trait_values[1];
+    //trait_range.first = *std::min_element(trait_values.begin(), trait_values.end());
+    //trait_range.second = *std::max_element(trait_values.begin(), trait_values.end());
+
+    return trait_range;
+}

@@ -3,6 +3,7 @@
 #include <cmath>
 #include "clade.hpp"
 #include "io.hpp"
+#include "traits.hpp"
 
 double bm_prob(double x, double x_0, double t, double sigma_2) {
 
@@ -26,5 +27,16 @@ std::vector<double> node_prob(std::vector<double> x_vector, std::vector<double> 
     }
 
     return result_vector;
+
+}
+
+std::pair<double, double> bounds(std::vector<traits*> t_range) {
+
+    std::pair<double, double> dis_bounds (0, 0);
+    std::pair<double, double> trait_range = get_trait_range(t_range);
+    dis_bounds.first = 0.5*trait_range.first;
+    dis_bounds.second = 1.5*trait_range.second;
+
+    return dis_bounds;
 
 }

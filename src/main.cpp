@@ -36,15 +36,10 @@ int main(int argc, char *const argv[]){
 
     auto [sptree, genetree, species_traits] = read_data(input_file); //parses input file 
     std::set<double> sp_times = sptree->get_speciation_times(); //gets species tree branch lengths 
+    std::cout << species_traits[3]->get_species();
 
-    std::vector<double> x_test_vector = {-2, 1, 0, 1, 2};
-    std::vector<double> x_0_test_vector = {0, 0, 0, 0, 0};
-
-    std::vector<double> test_probs = node_prob(x_test_vector, x_0_test_vector, 1, 1);
-
-    for (int i=0; i < test_probs.size(); i++) {
-        std::cout << test_probs.at(i) << std::endl;
-    }
+    //std::pair<double, double> test_bounds = get_trait_range(species_traits);
+    //std::cout << test_bounds.first << ", " << test_bounds.second << std::endl;
 
     return 0;
 }
