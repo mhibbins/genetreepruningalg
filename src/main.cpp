@@ -36,9 +36,13 @@ int main(int argc, char *const argv[]){
 
     auto [sptree, genetree, species_traits] = read_data(input_file); //parses input file 
     std::set<double> sp_times = sptree->get_speciation_times(); //gets species tree branch lengths
+    std::pair<double, double> test_bounds = bounds(species_traits); //get upper and lower bounds of trait vector
 
-    std::pair<double, double> test_bounds = bounds(species_traits);
-    std::cout << test_bounds.first << ", " << test_bounds.second << std::endl;
+    std::vector<double> test_state_vector = state_vector(100, test_bounds);
+    
+    for(int i=0; i < test_state_vector.size(); i++) {
+        std::cout << test_state_vector.at(i) << " ";
+    }
 
     return 0;
 }

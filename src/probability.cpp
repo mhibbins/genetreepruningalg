@@ -40,3 +40,19 @@ std::pair<double, double> bounds(std::vector<traits> t_range) {
     return dis_bounds;
 
 }
+
+std::vector<double> state_vector(int size, std::pair<double, double> bounds) {
+
+    std::vector<double> s_vector;
+    double step = bounds.first;
+    float range = bounds.second - bounds.first;
+    float stepsize = range/size;
+
+    while(step < bounds.second) {
+        s_vector.push_back(step);
+        step = step + stepsize;
+    }
+
+    return s_vector;
+
+}

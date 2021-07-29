@@ -7,4 +7,4 @@ std::vector<double> node_prob(std::vector<double> x_vector, std::vector<double> 
 
 std::pair<double, double> bounds(std::vector<traits> t_range);
 
-
+std::vector<double> state_vector(int size, std::pair<double, double> bounds);
