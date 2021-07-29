@@ -30,7 +30,7 @@ std::vector<double> node_prob(std::vector<double> x_vector, std::vector<double> 
 
 }
 
-std::pair<double, double> bounds(std::vector<traits*> t_range) {
+std::pair<double, double> bounds(std::vector<traits> t_range) {
 
     std::pair<double, double> dis_bounds (0, 0);
     std::pair<double, double> trait_range = get_trait_range(t_range);

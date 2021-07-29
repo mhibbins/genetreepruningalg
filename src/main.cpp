@@ -35,11 +35,10 @@ int main(int argc, char *const argv[]){
     }
 
     auto [sptree, genetree, species_traits] = read_data(input_file); //parses input file 
-    std::set<double> sp_times = sptree->get_speciation_times(); //gets species tree branch lengths 
-    std::cout << species_traits[3]->get_species();
+    std::set<double> sp_times = sptree->get_speciation_times(); //gets species tree branch lengths
 
-    //std::pair<double, double> test_bounds = get_trait_range(species_traits);
-    //std::cout << test_bounds.first << ", " << test_bounds.second << std::endl;
+    std::pair<double, double> test_bounds = bounds(species_traits);
+    std::cout << test_bounds.first << ", " << test_bounds.second << std::endl;
 
     return 0;
 }

@@ -10,7 +10,7 @@
 class traits;
 
 class traits {
-    friend traits* parse_traits(std::string trait_string); //allows parse_traits to set class attributes
+    friend traits parse_traits(std::string trait_string); //allows parse_traits to set class attributes
     std::string _species;
     double _trait;
     std::map<std::string, double> _trait_map;
@@ -22,6 +22,6 @@ public:
     int print_trait_map_size() const;
 };
 
-traits* parse_traits(std::string trait_string);
-std::pair<double, double> get_trait_range(std::vector<traits*> t_vector);
+traits parse_traits(std::string trait_string);
+std::pair<double, double> get_trait_range(std::vector<traits> t_vector);
 #endif

@@ -38,14 +38,14 @@ std::vector<std::string> simple_tokenizer(std::string s) {
   return line_vector;
 }
 
-std::tuple<clade*, clade*, std::vector<traits*>> read_data(std::istream& input_file){ //parses trees from input file 
+std::tuple<clade*, clade*, std::vector<traits>> read_data(std::istream& input_file){ //parses trees from input file 
 
   std::string line;
   std::string header;
 
   clade* sptree;
   clade* genetree;
-  std::vector<traits*> species_traits;
+  std::vector<traits> species_traits;
 
   while (getline(input_file, line)) {
 
@@ -77,7 +77,7 @@ std::tuple<clade*, clade*, std::vector<traits*>> read_data(std::istream& input_f
 
     if (header == "traits") {
       if (line.rfind("set", 0) == 0){
-        traits* species_trait = parse_traits(line);
+        traits species_trait = parse_traits(line);
         species_traits.push_back(species_trait);
       }
     }
