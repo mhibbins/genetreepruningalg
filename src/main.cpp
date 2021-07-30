@@ -38,11 +38,14 @@ int main(int argc, char *const argv[]){
     std::set<double> sp_times = sptree->get_speciation_times(); //gets species tree branch lengths
     std::pair<double, double> test_bounds = bounds(species_traits); //get upper and lower bounds of trait vector
 
-    std::vector<double> test_state_vector = state_vector(100, test_bounds);
+    std::vector<double> test_state_vector = state_vector(100, test_bounds); //get vector of possible character states to estimate probs over
+    std::set<std::pair<double, double>> test_intervals = get_all_bounds(test_state_vector);
+
     
-    for(int i=0; i < test_state_vector.size(); i++) {
-        std::cout << test_state_vector.at(i) << " ";
-    }
+    /*
+    for(auto it = test_intervals.begin(); it != test_intervals.end(); ++it) {
+        std::cout << " " << it.first;
+    } */
 
     return 0;
 }

@@ -56,3 +56,17 @@ std::vector<double> state_vector(int size, std::pair<double, double> bounds) {
     return s_vector;
 
 }
+
+std::set<std::pair<double, double>> get_all_bounds(const std::vector<double> states) {
+    
+    std::set<std::pair<double, double>> boundses;
+
+    for (int i = 0; i < states.size(); i++) {
+        std::pair<double, double> interval;
+        interval.first = states[i];
+        interval.second = states[i+1];
+        boundses.insert(interval);
+    };
+
+    return boundses;
+}
