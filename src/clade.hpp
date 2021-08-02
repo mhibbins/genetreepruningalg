@@ -89,7 +89,7 @@ public:
 
     //! Return a unique list of all brnach lengths for this clade and its descendants
     std::vector<double> get_branch_lengths() const;
-    std::set<double> get_speciation_times() const; //returns node labels with branch lengths
+    std::set<double> get_speciation_times() const; //returns tip branch lengths
 
     /// Checks that the list of node names of the lambda tree matches this one
     /// throw an exception if not
@@ -124,6 +124,7 @@ using cladevector = std::vector<const clade *>;
 std::string clade_index_or_name(const clade* node, const cladevector& order);
 
 clade* parse_newick(std::string newick_string);
+std::set<double> get_branch_intervals(clade* sptree, std::vector<clade*> genetrees); //returns time intervals for matrix cache
 //inline clade* parse_newick(std::string newick_string) { return parse_newick(newick_string); }
 
 #endif

@@ -34,18 +34,21 @@ int main(int argc, char *const argv[]){
         return 0;
     }
 
-    auto [sptree, genetree, species_traits] = read_data(input_file); //parses input file 
+    auto [sptree, genetrees, species_traits] = read_data(input_file); //parses input file 
     std::set<double> sp_times = sptree->get_speciation_times(); //gets species tree branch lengths
     std::pair<double, double> test_bounds = bounds(species_traits); //get upper and lower bounds of trait vector
 
     std::vector<double> test_state_vector = state_vector(100, test_bounds); //get vector of possible character states to estimate probs over
-    std::set<std::pair<double, double>> test_intervals = get_all_bounds(test_state_vector);
+    std::set<std::pair<double, double>> test_trait_intervals = get_all_bounds(test_state_vector); //get trait intervals to fill matrix cache 
+    std::set<double> test_branch_intervals = get_branch_intervals(sptree, genetrees); //get branch length intervals for matrix cache 
 
-    
-    /*
-    for(auto it = test_intervals.begin(); it != test_intervals.end(); ++it) {
-        std::cout << " " << it.first;
-    } */
+    std::set<double>::iterator it = test_branch_intervals.begin();
+
+        while (it != test_branch_intervals.end()) {
+            std::cout << *it << " ";
+            it++;
+        }
+
 
     return 0;
 }

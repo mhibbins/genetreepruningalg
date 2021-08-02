@@ -257,6 +257,43 @@ std::set<double> clade::get_speciation_times() const
     return sp_time_set;
 }
 
+std::set<double> get_branch_intervals(clade* sptree, std::vector<clade*> genetrees) {
+
+    std::set<double> branch_intervals;
+    std::set<double> sptree_branches = sptree->get_speciation_times();
+    std::set<double> genetrees_branches;
+
+    for (int i=0; i < genetrees.size(); i++) {
+
+        std::set<double> genetree_branches = genetrees[i]->get_speciation_times();
+
+        std::set<double>::iterator it = genetree_branches.begin();
+
+        while (it != genetree_branches.end()) {
+            genetrees_branches.insert(*it);
+            it++;
+        }
+    }
+
+    std::set<double>::iterator it = sptree_branches.begin();
+
+    while (it != sptree_branches.end()) {
+
+        std::set<double>::iterator it2 = genetrees_branches.begin();
+
+        while (it2 != genetrees_branches.end()) {
+            double interval = *it2 - *it;
+            if (interval > 0) {branch_intervals.insert(interval);}
+            it2++;
+        }
+        it++;
+    }
+
+    return branch_intervals;
+
+
+} //returns time intervals for matrix cache
+
 void clade::validate_lambda_tree(const clade* p_lambda_tree) const
 {
     auto g = [](std::set<std::string>& s, const clade* c) {
