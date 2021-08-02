@@ -54,7 +54,10 @@ std::vector<Eigen::MatrixXd> ConvProp_bounds_batched(std::vector<double> vt, dou
 
 DiffMat* p_diffmat = nullptr;
 const DiffMat& DiffMat::instance() {
-    p_diffmat = new DiffMat(0);
+
+    if (!p_diffmat) 
+        p_diffmat = new DiffMat(100);
+
     return *p_diffmat;
 }
 
