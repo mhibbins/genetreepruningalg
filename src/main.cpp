@@ -52,7 +52,8 @@ int main(int argc, char *const argv[]){
     std::pair<double, double> trait_interval_test = *trait_bounds.begin();
     double branch_length_test = *test_branch_intervals.begin();
     const Eigen::MatrixXd& test_matrix = calc.get_matrix(branch_length_test, trait_interval_test);
-    std::cout << test_matrix << std::endl;
+    std::cout << trait_interval_test.first << " " << trait_interval_test.second << " " << branch_length_test << std::endl;
+    //std::cout << test_matrix << std::endl;
 
     return 0;
 }

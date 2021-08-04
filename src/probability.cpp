@@ -5,12 +5,12 @@
 #include "io.hpp"
 #include "traits.hpp"
 
-double bm_prob(double x, double x_0, double t, double sigma_2) {
+double bm_prob(std::pair<double, double> boundses, double t, double sigma_2) {
 
     double result = 0.0; 
 
     double part1 = 1/(2*M_PI*t*sqrt(sigma_2));
-    double part2 = -1*((pow(x-x_0, 2.0))/(2*sigma_2*t));
+    double part2 = -1*((pow(boundses.second-boundses.first, 2.0))/(2*sigma_2*t));
 
     result = part1*exp(part2);
 
@@ -18,12 +18,13 @@ double bm_prob(double x, double x_0, double t, double sigma_2) {
 
 }
 
-std::vector<double> node_prob(std::vector<double> x_vector, std::vector<double> x_0_vector, double t, double sigma_2) { 
+std::vector<double> node_prob(std::pair<std::vector<double>, std::vector<double>> v_boundses, double t, double sigma_2) { 
 
     std::vector<double> result_vector; 
 
-    for (int i=0; i < x_vector.size(); i++){
-        result_vector.push_back(bm_prob(x_vector[i], x_0_vector[i], t, sigma_2));
+    for (int i=0; i < v_boundses.second.size(); i++){
+        std::pair<double, double> bounds (v_boundses.second[i], v_boundses.first[i]);
+        result_vector.push_back(bm_prob(bounds, t, sigma_2));
     }
 
     return result_vector;

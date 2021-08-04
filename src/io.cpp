@@ -38,7 +38,7 @@ std::vector<std::string> simple_tokenizer(std::string s) {
   return line_vector;
 }
 
-std::tuple<clade*, std::vector<clade*>, std::vector<traits>> read_data(std::istream& input_file){ //parses trees from input file 
+std::tuple<clade*, std::vector<clade*>, std::vector<traits>> read_data(std::istream& input_file){ //parses data from input file 
 
   std::string line;
   std::string header;

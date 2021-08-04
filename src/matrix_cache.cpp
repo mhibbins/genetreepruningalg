@@ -9,7 +9,6 @@
 
 #include "matrix_cache.hpp"
 #include "probability.hpp"
-#include "DiffMat.hpp"
 
 std::ostream& operator<<(std::ostream& ost, const matrix_cache_key& k)
 {
@@ -58,13 +57,24 @@ void matrix_cache::precalculate_matrices(const std::set<boundaries>& boundses, c
     }
 
     // calculate matrices in parallel
+    std::vector<matrix*> matrices(keys.size());
+    generate(matrices.begin(), matrices.end(), [this] { return new matrix(this->_matrix_size); });
+
+    int s = 0;
     size_t i = 0;
     size_t num_keys = keys.size();
-    std::vector<boundaries> vBounds(keys.size());
-    std::vector<double> vBranches(keys.size());
-    transform(keys.begin(), keys.end(), vBounds.begin(), [](matrix_cache_key k) { return k.bounds(); });
-    transform(keys.begin(), keys.end(), vBranches.begin(), [](matrix_cache_key k) { return k.branch_length(); });
-    auto matrices = ConvProp_bounds_batched(vBranches, _sigma_squared * _sigma_squared / 2, DiffMat::instance(), vBounds);
+
+    /* Need to write some kind of nested loop in this block
+    to get matrices for different sigma2, bounds, and branch length values.
+    ----------------------------------------------------------------------*/
+    for (i = 0; i < num_keys; ++i) 
+    {
+        for (s = 1; s < _matrix_size; s++) { 
+            
+        }
+    }
+    //----------------------------------------------------------------------
+
     for (i = 0; i < num_keys; ++i)
     {
         _matrix_cache[keys[i]] = matrices[i];

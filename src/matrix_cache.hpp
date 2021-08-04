@@ -5,7 +5,38 @@
 #include <vector> 
 #include <set>
 
-#include "DiffMat.hpp" 
+
+using boundaries = std::pair<double, double>;
+
+class matrix
+{
+    std::vector<double> values;
+    int _size;
+public:
+    matrix(int sz) : _size(sz)
+    {
+        values.resize(_size*_size);
+    }
+    void set(int x, int y, double val)
+    {
+        assert(x < _size);
+        assert(y < _size);
+        values[x*_size + y] = val;
+    }
+    double get(int x, int y) const
+    {
+        assert(x < _size);
+        assert(y < _size);
+        return values[x*_size + y];
+    }
+    int size() const {
+        return _size;
+    }
+    bool is_zero() const;
+    void multiply(const std::vector<double>& v, int s_min_family_size, int s_max_family_size, int c_min_family_size, int c_max_family_size, double * result) const;
+
+    int select_random_y(int x, int max) const;
+};
 
 class matrix_cache_key {
     std::pair<long, long> _bounds;
@@ -33,11 +64,12 @@ If the given parameters have already been calculated, will return the cached val
 */
 class matrix_cache {
 private:
-    std::map<matrix_cache_key, Eigen::MatrixXd> _matrix_cache; //!< nested map that stores transition probabilities for a given lambda and branch_length (outer), then for a given parent and child size (inner)
+    std::map<matrix_cache_key, matrix*> _matrix_cache; //!< nested map that stores transition probabilities for a given lambda and branch_length (outer), then for a given parent and child size (inner)
     double _sigma_squared;
+    int _matrix_size;
 public:
     void precalculate_matrices(const std::set<boundaries>& boundses, const std::set<double>& branch_lengths);
-    const Eigen::MatrixXd& get_matrix(double branch_length, boundaries bounds) const;
+    const matrix* get_matrix(double branch_length, boundaries bounds) const;
 
     int get_cache_size() const {
         return _matrix_cache.size();
