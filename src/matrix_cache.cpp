@@ -23,7 +23,7 @@ matrix_cache::matrix_cache()
 
 matrix_cache::~matrix_cache() {}
 
-const Eigen::MatrixXd& matrix_cache::get_matrix(double branch_length, boundaries bounds) const
+const matrix* matrix_cache::get_matrix(double branch_length, boundaries bounds) const
 {
     // cout << "Matrix request " << size << "," << branch_length << "," << lambda << endl;
 
@@ -40,7 +40,7 @@ const Eigen::MatrixXd& matrix_cache::get_matrix(double branch_length, boundaries
     }
 }
 
-void matrix_cache::precalculate_matrices(const std::set<boundaries>& boundses, const std::set<double>& branch_lengths)
+void matrix_cache::precalculate_matrices(const double sigma2, const std::set<boundaries>& boundses, const std::set<double>& branch_lengths)
 {
     // build a list of required matrices
     std::vector<matrix_cache_key> keys;
@@ -64,16 +64,17 @@ void matrix_cache::precalculate_matrices(const std::set<boundaries>& boundses, c
     size_t i = 0;
     size_t num_keys = keys.size();
 
-    /* Need to write some kind of nested loop in this block
-    to get matrices for different sigma2, bounds, and branch length values.
-    ----------------------------------------------------------------------*/
+
     for (i = 0; i < num_keys; ++i) 
     {
         for (s = 1; s < _matrix_size; s++) { 
-            
+            boundaries bounds = keys[i].bounds();
+            double branch_length = keys[i].branch_length();
+
+            matrix* m = matrices[i];
+            m->set(bounds.first, bounds.second, bm_prob(bounds, branch_length, sigma2)); //I think this will work? Make sure to check though
         }
     }
-    //----------------------------------------------------------------------
 
     for (i = 0; i < num_keys; ++i)
     {
