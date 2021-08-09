@@ -4,6 +4,7 @@
 #include "clade.hpp"
 #include "io.hpp"
 #include "traits.hpp"
+#include "matrix_cache.hpp"
 
 double bm_prob(std::pair<double, double> boundses, double t, double sigma_2) {
 
@@ -31,7 +32,7 @@ std::vector<double> node_prob(std::pair<std::vector<double>, std::vector<double>
 
 }
 
-std::pair<double, double> bounds(std::vector<traits> t_range) {
+std::pair<double, double> bounds(std::vector<trait> t_range) {
 
     std::pair<double, double> dis_bounds (0, 0);
     std::pair<double, double> trait_range = get_trait_range(t_range);
@@ -70,4 +71,23 @@ std::set<std::pair<double, double>> get_all_bounds(const std::vector<double> sta
     };
 
     return boundses;
+}
+
+void compute_node_probability(const clade* node, const std::vector<trait> traits, 
+    std::map<const clade*, std::vector<double>> probabilities,
+    const double sigma2, const matrix_cache& cache) 
+{
+    if (node->is_leaf()) {
+        double species_trait = get_species_trait(node->get_taxon_name(), traits);
+        probabilities[node][species_trait] = 1.0;
+    }
+    else {
+        std::vector<double>& node_probs = probabilities[node];
+        fill(node_probs.begin(), node_probs.end(), 1);
+
+        for (auto it = node->descendant_begin(); it != node->descendant_end(); ++it) {
+            const matrix* m = cache.get_matrix((*it)->get_branch_length(), bounds(traits));
+            std::vector<double> result = m * probabilities[*it]; //need to figure out how to do multiply operation to get new probs
+        }
+    }
 }

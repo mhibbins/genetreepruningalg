@@ -45,16 +45,16 @@ int main(int argc, char *const argv[]){
     //std::vector<double> test_state_vector = state_vector(100, test_bounds); //get vector of possible character states to estimate probs over
     //std::set<std::pair<double, double>> test_trait_intervals = get_all_bounds(test_state_vector); //get trait intervals to fill matrix cache 
     std::set<double> test_branch_intervals = get_branch_intervals(sptree, genetrees); //get branch length intervals for matrix cache 
-    matrix_cache calc; //inititialize matrix cache
-    calc.precalculate_matrices(1, trait_bounds, test_branch_intervals); //fill matrix cache 
+    matrix_cache cache; //inititialize matrix cache
+    cache.precalculate_matrices(1, trait_bounds, test_branch_intervals); //fill matrix cache 
 
     //Get a test matrix
     std::pair<double, double> trait_interval_test = *trait_bounds.begin();
     double branch_length_test = *test_branch_intervals.begin();
-    const matrix* p_test_matrix = calc.get_matrix(branch_length_test, trait_interval_test);
+    const matrix* p_test_matrix = cache.get_matrix(branch_length_test, trait_interval_test);
     //std::cout << trait_interval_test.first << " " << trait_interval_test.second << " " << branch_length_test << std::endl;
-    double test_val = p_test_matrix->get(trait_interval_test.second - trait_interval_test.first, branch_length_test);
-    std::cout << test_val << std::endl;
+    //double test_val = p_test_matrix->get(trait_interval_test.second - trait_interval_test.first, branch_length_test);
+    std::cout << p_test_matrix->size() << std::endl;
 
     return 0;
 }

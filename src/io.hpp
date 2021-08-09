@@ -6,9 +6,9 @@
 extern struct option longopts[];
 
 class clade;
-class traits;
+class trait;
 
-std::tuple<clade*, std::vector<clade*>, std::vector<traits>> read_data(std::istream& input_file);
+std::tuple<clade*, std::vector<clade*>, std::vector<trait>> read_data(std::istream& input_file);
 
 std::ostream& operator<<(std::ostream &out, clade* my_clade);
 std::string clade_to_string(clade* my_clade);

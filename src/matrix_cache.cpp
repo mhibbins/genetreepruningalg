@@ -23,6 +23,11 @@ matrix_cache::matrix_cache()
 
 matrix_cache::~matrix_cache() {}
 
+void matrix::multiply(const std::vector<double>& probs, boundaries s_bounds, boundaries c_bounds, double * result) const {
+
+}
+
+
 const matrix* matrix_cache::get_matrix(double branch_length, boundaries bounds) const
 {
     // cout << "Matrix request " << size << "," << branch_length << "," << lambda << endl;
