@@ -23,8 +23,15 @@ matrix_cache::matrix_cache()
 
 matrix_cache::~matrix_cache() {}
 
-void matrix::multiply(const std::vector<double>& probs, boundaries s_bounds, boundaries c_bounds, double * result) const {
+void matrix::multiply(const std::vector<double>& probs, int dis_range, double * result) const {
 
+    for (int s = 0; s <= dis_range; s++) {
+        result[s] = 0;
+
+        for (int c = 0; c <= dis_range; c++) {
+            result[s] += get(s, c) * probs[c];
+        }
+    }
 }
 
 

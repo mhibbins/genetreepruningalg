@@ -6,6 +6,8 @@
 #include "traits.hpp"
 #include "matrix_cache.hpp"
 
+int discretization_range = 100;
+
 double bm_prob(std::pair<double, double> boundses, double t, double sigma_2) {
 
     double result = 0.0; 
@@ -43,34 +45,20 @@ std::pair<double, double> bounds(std::vector<trait> t_range) {
 
 }
 
-std::vector<double> state_vector(int size, std::pair<double, double> bounds) {
+std::set<boundaries> get_discretized_traits(std::pair<double, double> bounds) {
 
-    std::vector<double> s_vector;
+    std::set<boundaries> dis_traits;
     double step = bounds.first;
     float range = bounds.second - bounds.first;
-    float stepsize = range/size;
+    float stepsize = range/discretization_range;
 
     while(step < bounds.second) {
-        s_vector.push_back(step);
+        boundaries bound = {step - stepsize, step + stepsize};
+        dis_traits.insert(bound);
         step = step + stepsize;
     }
 
-    return s_vector;
-
-}
-
-std::set<std::pair<double, double>> get_all_bounds(const std::vector<double> states) {
-    
-    std::set<std::pair<double, double>> boundses;
-
-    for (int i = 0; i < states.size(); i++) {
-        std::pair<double, double> interval;
-        interval.first = states[i];
-        interval.second = states[i+1];
-        boundses.insert(interval);
-    };
-
-    return boundses;
+    return dis_traits;
 }
 
 void compute_node_probability(const clade* node, const std::vector<trait> traits, 
@@ -83,11 +71,16 @@ void compute_node_probability(const clade* node, const std::vector<trait> traits
     }
     else {
         std::vector<double>& node_probs = probabilities[node];
-        fill(node_probs.begin(), node_probs.end(), 1);
+        std::fill(node_probs.begin(), node_probs.end(), 1);
 
         for (auto it = node->descendant_begin(); it != node->descendant_end(); ++it) {
+            double result[discretization_range];
+            std::fill(result, result + discretization_range, 0);
             const matrix* m = cache.get_matrix((*it)->get_branch_length(), bounds(traits));
-            std::vector<double> result = m * probabilities[*it]; //need to figure out how to do multiply operation to get new probs
+            m->multiply(probabilities[*it], discretization_range, result);
+            for (size_t i = 0; i < node_probs.size(); i++) {
+                node_probs[i] *= result[i];
+            }
         }
     }
 }

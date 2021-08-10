@@ -34,7 +34,7 @@ public:
         return _size;
     }
     bool is_zero() const;
-    void multiply(const std::vector<double>& v, boundaries s_bounds, boundaries c_bounds, double * result) const;
+    void multiply(const std::vector<double>& probs, int dis_range, double * result) const;
 
     int select_random_y(int x, int max) const;
 };
