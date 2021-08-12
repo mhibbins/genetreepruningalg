@@ -36,18 +36,20 @@ int main(int argc, char *const argv[]){
     }
 
     auto [sptree, genetrees, species_traits] = read_data(input_file); //parses input file 
-    std::set<boundaries> trait_bounds = get_discretized_traits(bounds(species_traits)); //get discretized trait vector 
+    std::set<boundaries> trait_bounds; //set of bounds for each trait
+    boundaries test_bounds = bounds(species_traits); //get upper and lower bounds of trait vector
+    trait_bounds.insert(test_bounds);
     std::set<double> test_branch_intervals = get_branch_intervals(sptree, genetrees); //get branch length intervals for matrix cache 
     matrix_cache cache; //inititialize matrix cache
     cache.precalculate_matrices(1, trait_bounds, test_branch_intervals); //fill matrix cache 
 
     //Get a test matrix
-    std::pair<double, double> trait_interval_test = *trait_bounds.begin();
+    boundaries trait_interval_test = *trait_bounds.begin();
     double branch_length_test = *test_branch_intervals.begin();
     const matrix* p_test_matrix = cache.get_matrix(branch_length_test, trait_interval_test);
     //std::cout << trait_interval_test.first << " " << trait_interval_test.second << " " << branch_length_test << std::endl;
-    //double test_val = p_test_matrix->get(trait_interval_test.second - trait_interval_test.first, branch_length_test);
-    std::cout << p_test_matrix->size() << std::endl;
+    double test_val = p_test_matrix->get(trait_interval_test.second - trait_interval_test.first, branch_length_test);
+    std::cout << test_val << std::endl;
 
     return 0;
 }

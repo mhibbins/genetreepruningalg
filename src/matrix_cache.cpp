@@ -5,8 +5,6 @@
 #include <sstream>
 #include <random>
 
-#include <Eigen/Dense>
-
 #include "matrix_cache.hpp"
 #include "probability.hpp"
 

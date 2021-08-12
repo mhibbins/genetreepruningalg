@@ -61,23 +61,47 @@ std::set<boundaries> get_discretized_traits(std::pair<double, double> bounds) {
     return dis_traits;
 }
 
+std::vector<double> pos_bounds(double traitval, int dis_size, boundaries bounds) {
+
+    std::vector<double> X(dis_size, 0);
+
+    if (traitval == bounds.second) 
+    {
+        X[dis_size - 1] = 1;
+    }
+    else 
+    {
+        double nx = (dis_size - 1) * (traitval - bounds.first) / double(bounds.second - bounds.first);
+        int ix = floor(nx);
+        double ux = nx - ix;
+        X[ix + 1] = ux;
+        X[ix] = 1 - ux;
+    }
+
+    for (int i = 0; i <= X.size(); i++) { //I think this does the same thing as the lambda expression in CAGEE's DiffMat.cpp, but not 100%
+        X[i] = X[i] * (dis_size-1) / double(bounds.second - bounds.first); 
+    }
+}
+
 void compute_node_probability(const clade* node, const std::vector<trait> traits, 
     std::map<const clade*, std::vector<double>> probabilities,
     const double sigma2, const matrix_cache& cache) 
 {
     if (node->is_leaf()) {
         double species_trait = get_species_trait(node->get_taxon_name(), traits);
-        probabilities[node][species_trait] = 1.0;
+        probabilities[node] = pos_bounds(species_trait, discretization_range, bounds(traits));
     }
     else {
         std::vector<double>& node_probs = probabilities[node];
         std::fill(node_probs.begin(), node_probs.end(), 1);
 
         for (auto it = node->descendant_begin(); it != node->descendant_end(); ++it) {
+
             double result[discretization_range];
             std::fill(result, result + discretization_range, 0);
             const matrix* m = cache.get_matrix((*it)->get_branch_length(), bounds(traits));
             m->multiply(probabilities[*it], discretization_range, result);
+            
             for (size_t i = 0; i < node_probs.size(); i++) {
                 node_probs[i] *= result[i];
             }
