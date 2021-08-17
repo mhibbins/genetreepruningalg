@@ -5,12 +5,13 @@
 
 #include <getopt.h>
 
-#include "user_data.hpp"
 #include "io.hpp"
+#include "user_data.hpp"
 #include "clade.hpp"
 #include "traits.hpp"
-#include "probability.hpp"
 #include "matrix_cache.hpp"
+#include "probability.hpp"
+
 
 input_parameters read_arguments(int argc, char *const argv[])
 {
@@ -43,13 +44,20 @@ int main(int argc, char *const argv[]){
     matrix_cache cache; //inititialize matrix cache
     cache.precalculate_matrices(1, trait_bounds, test_branch_intervals); //fill matrix cache 
 
-    //Get a test matrix
+    /*Matrix cache testing
     boundaries trait_interval_test = *trait_bounds.begin();
     double branch_length_test = *test_branch_intervals.begin();
     const matrix* p_test_matrix = cache.get_matrix(branch_length_test, trait_interval_test);
     //std::cout << trait_interval_test.first << " " << trait_interval_test.second << " " << branch_length_test << std::endl;
     double test_val = p_test_matrix->get(trait_interval_test.second - trait_interval_test.first, branch_length_test);
-    std::cout << test_val << std::endl;
+    std::cout << test_val << std::endl;*/
+
+    //Running pruning alg test 
+    std::vector<double> test_ancestral_probs = inference_prune(species_traits, cache, 1, sptree);
+
+    for (int i = 0; i <= test_ancestral_probs.size(); i++) {
+        std::cout << test_ancestral_probs[i] << " ";
+    }
 
     return 0;
 }

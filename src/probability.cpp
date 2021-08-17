@@ -108,3 +108,20 @@ void compute_node_probability(const clade* node, const std::vector<trait> traits
         }
     }
 }
+
+std::vector<double> inference_prune(const std::vector<trait> t, const matrix_cache& cache, const double sigma_2, const clade* p_tree) {
+
+    /*Does the pruning alg calc over all nodes of the specified tree for a given input trait. Returns the vector of 
+    probabilities for character states at the root of the tree. Currently doesn't have a multiplier for sigma^2, might
+    have to work that in later*/ 
+
+    std::map<const clade*, std::vector<double>> probabilities;
+    auto init_func = [&](const clade* node) { probabilities[node] = std::vector<double> (discretization_range, 0); };
+    std::for_each(p_tree->reverse_level_begin(), p_tree->reverse_level_end(), init_func);
+
+    auto compute_func = [&](const clade* c) { compute_node_probability(c, t, probabilities, sigma_2, cache); };
+    std::for_each(p_tree->reverse_level_begin(), p_tree->reverse_level_end(), compute_func);
+
+    return std::vector<double>(probabilities.at(p_tree).data(), probabilities.at(p_tree).data() + probabilities.at(p_tree).size());
+    
+}
