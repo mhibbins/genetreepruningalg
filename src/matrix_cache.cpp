@@ -50,24 +50,38 @@ const matrix* matrix_cache::get_matrix(double branch_length, boundaries bounds) 
     }
 }
 
-void matrix_cache::precalculate_matrices(const double sigma2, const std::set<boundaries>& boundses, const std::set<double>& branch_lengths)
+std::map<double, boundaries> matrix_cache::get_cache_keys() { //debugging function to get matrix keys 
+
+    std::map<double, boundaries> cache_keys;
+
+    for (auto const& x : _matrix_cache) {
+        matrix_cache_key keys = x.first;
+        boundaries bounds = keys.bounds(); 
+        double branch = keys.branch_length();
+        cache_keys[branch] = bounds;
+    }
+
+    return cache_keys;
+} 
+
+void matrix_cache::precalculate_matrices(const double sigma2, const boundaries bounds, const std::set<double>& branch_lengths)
 {
     // build a list of required matrices
+    std::set<boundaries> dis_bounds = get_discretized_traits(bounds);
     std::vector<matrix_cache_key> keys;
-    for (auto bounds : boundses)
+
+    for (double branch_length : branch_lengths)
     {
-        for (double branch_length : branch_lengths)
+        matrix_cache_key key(bounds, branch_length);
+        if (_matrix_cache.find(key) == _matrix_cache.end())
         {
-            matrix_cache_key key(bounds, branch_length);
-            if (_matrix_cache.find(key) == _matrix_cache.end())
-            {
-                keys.push_back(key);
-            }
+            keys.push_back(key);
         }
     }
 
+  
     // calculate matrices in parallel
-    std::vector<matrix*> matrices(keys.size());
+    std::vector<matrix*> matrices(dis_bounds.size()); //the matrix size is initialized up here. So I should discretize before this step
     generate(matrices.begin(), matrices.end(), [this] { return new matrix(this->_matrix_size); });
 
     int s = 0;
@@ -78,11 +92,19 @@ void matrix_cache::precalculate_matrices(const double sigma2, const std::set<bou
     for (i = 0; i < num_keys; ++i) 
     {
         for (s = 1; s < _matrix_size; s++) { 
+
+            //Need to write another loop in here to go over each discretized interval. 
             boundaries bounds = keys[i].bounds();
             double branch_length = keys[i].branch_length();
 
             matrix* m = matrices[i];
-            m->set(bounds.first, bounds.second, bm_prob(bounds, branch_length, sigma2)); //I think this will work? Make sure to check though
+            std::set<boundaries>::iterator it = dis_bounds.begin();
+            
+            while (it != dis_bounds.end()) {
+                boundaries dis_interval = *it;
+                m->set(dis_interval.first, dis_interval.second, bm_prob(dis_interval, branch_length, sigma2));
+                it++;
+                } //Should now loop over each disretized interval 
         }
     }
 

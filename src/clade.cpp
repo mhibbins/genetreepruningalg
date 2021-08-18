@@ -271,6 +271,7 @@ std::set<double> get_branch_intervals(clade* sptree, std::vector<clade*> genetre
 
         while (it != genetree_branches.end()) {
             genetrees_branches.insert(*it);
+            branch_intervals.insert(*it);
             it++;
         }
     }
@@ -278,6 +279,8 @@ std::set<double> get_branch_intervals(clade* sptree, std::vector<clade*> genetre
     std::set<double>::iterator it = sptree_branches.begin();
 
     while (it != sptree_branches.end()) {
+
+        branch_intervals.insert(*it);
 
         std::set<double>::iterator it2 = genetrees_branches.begin();
 

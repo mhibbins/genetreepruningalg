@@ -69,8 +69,9 @@ private:
     double _sigma_squared;
     int _matrix_size; 
 public:
-    void precalculate_matrices(const double sigma2, const std::set<boundaries>& boundses, const std::set<double>& branch_lengths);
+    void precalculate_matrices(const double sigma2, const boundaries bounds, const std::set<double>& branch_lengths);
     const matrix* get_matrix(double branch_length, boundaries bounds) const;
+    std::map<double, boundaries> get_cache_keys();
 
     int get_cache_size() const {
         return _matrix_cache.size();

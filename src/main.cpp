@@ -37,12 +37,10 @@ int main(int argc, char *const argv[]){
     }
 
     auto [sptree, genetrees, species_traits] = read_data(input_file); //parses input file 
-    std::set<boundaries> trait_bounds; //set of bounds for each trait
     boundaries test_bounds = bounds(species_traits); //get upper and lower bounds of trait vector
-    trait_bounds.insert(test_bounds);
     std::set<double> test_branch_intervals = get_branch_intervals(sptree, genetrees); //get branch length intervals for matrix cache 
     matrix_cache cache; //inititialize matrix cache
-    cache.precalculate_matrices(1, trait_bounds, test_branch_intervals); //fill matrix cache 
+    cache.precalculate_matrices(1, test_bounds, test_branch_intervals); //fill matrix cache 
 
     /*Matrix cache testing
     boundaries trait_interval_test = *trait_bounds.begin();
@@ -53,11 +51,23 @@ int main(int argc, char *const argv[]){
     std::cout << test_val << std::endl;*/
 
     //Running pruning alg test 
+
     std::vector<double> test_ancestral_probs = inference_prune(species_traits, cache, 1, sptree);
 
     for (int i = 0; i <= test_ancestral_probs.size(); i++) {
         std::cout << test_ancestral_probs[i] << " ";
     }
+
+    //Get matrix cache keys for debugging 
+
+    /*
+    std::map<double, boundaries> test_keys = cache.get_cache_keys();
+
+    for (auto const& x : test_keys) {
+        boundaries bounds = x.second;
+        std::cout << x.first << " : " << bounds.first << " " << bounds.second << std::endl; //problem here is that the bounds are a pair
+    }*/
+
 
     return 0;
 }
