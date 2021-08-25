@@ -64,6 +64,21 @@ std::map<double, boundaries> matrix_cache::get_cache_keys() { //debugging functi
     return cache_keys;
 } 
 
+std::vector<double> matrix_cache::get_cache_sizes() { //debugging function to get matrix sizes
+
+    std::vector<double> cache_sizes;
+
+    for (auto const& x : _matrix_cache) {
+        matrix_cache_key keys = x.first;
+        boundaries bounds = keys.bounds(); 
+        double branch = keys.branch_length();
+        const matrix* matrix_x = get_matrix(branch, bounds);
+        cache_sizes.push_back(matrix_x->size());
+    }
+
+    return cache_sizes;
+} 
+
 void matrix_cache::precalculate_matrices(const double sigma2, const boundaries bounds, const std::set<double>& branch_lengths)
 {
     // build a list of required matrices

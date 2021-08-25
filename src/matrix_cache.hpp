@@ -72,6 +72,7 @@ public:
     void precalculate_matrices(const double sigma2, const boundaries bounds, const std::set<double>& branch_lengths);
     const matrix* get_matrix(double branch_length, boundaries bounds) const;
     std::map<double, boundaries> get_cache_keys();
+    std::vector<double> get_cache_sizes();
 
     int get_cache_size() const {
         return _matrix_cache.size();

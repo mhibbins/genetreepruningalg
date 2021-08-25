@@ -50,13 +50,16 @@ int main(int argc, char *const argv[]){
     double test_val = p_test_matrix->get(trait_interval_test.second - trait_interval_test.first, branch_length_test);
     std::cout << test_val << std::endl;*/
 
+    /*
     //Running pruning alg test 
 
     std::vector<double> test_ancestral_probs = inference_prune(species_traits, cache, 1, sptree);
+    */
 
+    /*
     for (int i = 0; i <= test_ancestral_probs.size(); i++) {
         std::cout << test_ancestral_probs[i] << " ";
-    }
+    }*/
 
     //Get matrix cache keys for debugging 
 
@@ -67,6 +70,14 @@ int main(int argc, char *const argv[]){
         boundaries bounds = x.second;
         std::cout << x.first << " : " << bounds.first << " " << bounds.second << std::endl; //problem here is that the bounds are a pair
     }*/
+
+    //Get matrix sizes for debugging
+
+    std::vector<double> matrix_sizes = cache.get_cache_sizes();
+
+    for (int i = 0; i <= matrix_sizes.size(); i++) {
+        std::cout << matrix_sizes[i] << " ";
+    }
 
 
     return 0;
