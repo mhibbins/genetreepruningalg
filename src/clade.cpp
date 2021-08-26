@@ -271,7 +271,7 @@ std::set<double> get_branch_intervals(clade* sptree, std::vector<clade*> genetre
 
         while (it != genetree_branches.end()) {
             genetrees_branches.insert(*it);
-            branch_intervals.insert(*it);
+            branch_intervals.insert(*it); //tip branches in gene trees
             it++;
         }
     }
@@ -280,16 +280,44 @@ std::set<double> get_branch_intervals(clade* sptree, std::vector<clade*> genetre
 
     while (it != sptree_branches.end()) {
 
-        branch_intervals.insert(*it);
+        branch_intervals.insert(*it); //tip branches in species tree
 
         std::set<double>::iterator it2 = genetrees_branches.begin();
 
         while (it2 != genetrees_branches.end()) {
-            double interval = *it2 - *it;
+            double interval = *it2 - *it; //time slices between species tree and gene tree nodes
             if (interval > 0) {branch_intervals.insert(interval);}
             it2++;
         }
         it++;
+    }
+
+    std::set<double>::iterator it3 = sptree_branches.begin();
+
+    while (it3 != sptree_branches.end()) {
+
+        std::set<double>::iterator it4 = sptree_branches.begin();
+
+        while (it4 != sptree_branches.end()) {
+            double interval = *it4 - *it3; //species tree internal branches 
+            if (interval > 0) {branch_intervals.insert(interval);}
+            it4++;
+        }
+        it3++;
+    }
+
+    std::set<double>::iterator it5 = genetrees_branches.begin();
+
+    while (it5 != genetrees_branches.end()) {
+
+        std::set<double>::iterator it6 = genetrees_branches.begin();
+
+        while (it6 != genetrees_branches.end()) {
+            double interval = *it6 - *it5; //gene tree internal branches 
+            if (interval > 0) {branch_intervals.insert(interval);}
+            it6++;
+        }
+        it5++;
     }
 
     return branch_intervals;

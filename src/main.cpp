@@ -12,6 +12,7 @@
 #include "matrix_cache.hpp"
 #include "probability.hpp"
 
+extern int discretization_range;
 
 input_parameters read_arguments(int argc, char *const argv[])
 {
@@ -39,7 +40,7 @@ int main(int argc, char *const argv[]){
     auto [sptree, genetrees, species_traits] = read_data(input_file); //parses input file 
     boundaries test_bounds = bounds(species_traits); //get upper and lower bounds of trait vector
     std::set<double> test_branch_intervals = get_branch_intervals(sptree, genetrees); //get branch length intervals for matrix cache 
-    matrix_cache cache; //inititialize matrix cache
+    matrix_cache cache(discretization_range); //inititialize matrix cache
     cache.precalculate_matrices(1, test_bounds, test_branch_intervals); //fill matrix cache 
 
     /*Matrix cache testing
@@ -50,19 +51,15 @@ int main(int argc, char *const argv[]){
     double test_val = p_test_matrix->get(trait_interval_test.second - trait_interval_test.first, branch_length_test);
     std::cout << test_val << std::endl;*/
 
-    /*
     //Running pruning alg test 
 
     std::vector<double> test_ancestral_probs = inference_prune(species_traits, cache, 1, sptree);
-    */
 
-    /*
     for (int i = 0; i <= test_ancestral_probs.size(); i++) {
         std::cout << test_ancestral_probs[i] << " ";
-    }*/
+    }
 
     //Get matrix cache keys for debugging 
-
     /*
     std::map<double, boundaries> test_keys = cache.get_cache_keys();
 
@@ -73,11 +70,12 @@ int main(int argc, char *const argv[]){
 
     //Get matrix sizes for debugging
 
+    /*
     std::vector<double> matrix_sizes = cache.get_cache_sizes();
 
     for (int i = 0; i <= matrix_sizes.size(); i++) {
         std::cout << matrix_sizes[i] << " ";
-    }
+    }*/
 
 
     return 0;

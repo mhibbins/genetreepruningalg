@@ -78,7 +78,7 @@ public:
         return _matrix_cache.size();
     }
 
-    matrix_cache();
+    matrix_cache(int matrix_size) : _matrix_size(matrix_size) {}
     ~matrix_cache();
 
     friend std::ostream& operator<<(std::ostream& ost, matrix_cache& c);

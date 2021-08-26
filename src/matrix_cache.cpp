@@ -14,19 +14,14 @@ std::ostream& operator<<(std::ostream& ost, const matrix_cache_key& k)
     return ost;
 }
 
-matrix_cache::matrix_cache()
-{
-    //constructor is currently empty as we don't have a lambda parameter
-}
-
 matrix_cache::~matrix_cache() {}
 
 void matrix::multiply(const std::vector<double>& probs, int dis_range, double * result) const {
 
-    for (int s = 0; s <= dis_range; s++) {
+    for (int s = 0; s < dis_range; s++) {
         result[s] = 0;
 
-        for (int c = 0; c <= dis_range; c++) {
+        for (int c = 0; c < dis_range; c++) {
             result[s] += get(s, c) * probs[c];
         }
     }
