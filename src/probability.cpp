@@ -21,19 +21,6 @@ double bm_prob(std::pair<double, double> boundses, double t, double sigma_2) {
 
 }
 
-std::vector<double> node_prob(std::pair<std::vector<double>, std::vector<double>> v_boundses, double t, double sigma_2) { 
-
-    std::vector<double> result_vector; 
-
-    for (int i=0; i < v_boundses.second.size(); i++){
-        std::pair<double, double> bounds (v_boundses.second[i], v_boundses.first[i]);
-        result_vector.push_back(bm_prob(bounds, t, sigma_2));
-    }
-
-    return result_vector;
-
-}
-
 std::pair<double, double> bounds(std::vector<trait> t_range) {
 
     std::pair<double, double> dis_bounds (0, 0);
