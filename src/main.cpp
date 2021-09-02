@@ -43,15 +43,24 @@ int main(int argc, char *const argv[]){
     matrix_cache cache(discretization_range); //inititialize matrix cache
     cache.precalculate_matrices(1, test_bounds, test_branch_intervals); //fill matrix cache 
 
-    /*Matrix cache testing
-    boundaries trait_interval_test = *trait_bounds.begin();
+    /*
     double branch_length_test = *test_branch_intervals.begin();
-    const matrix* p_test_matrix = cache.get_matrix(branch_length_test, trait_interval_test);
-    //std::cout << trait_interval_test.first << " " << trait_interval_test.second << " " << branch_length_test << std::endl;
-    double test_val = p_test_matrix->get(trait_interval_test.second - trait_interval_test.first, branch_length_test);
+    const matrix* test_matrix = cache.get_matrix(branch_length_test, test_bounds);
+    double test_val = test_matrix->get(0,0);
     std::cout << test_val << std::endl;*/
 
     //Running pruning alg test 
+
+    //pos_bounds test
+
+    /*
+    double test_trait = get_species_trait("1", species_traits);
+
+    std::vector<double> pos_test_vector = pos_bounds(test_trait, discretization_range, test_bounds);
+
+    for (int i = 0; i <= pos_test_vector.size(); i++) {
+        std::cout << pos_test_vector[i] << " ";
+    }*/
 
     std::vector<double> test_ancestral_probs = inference_prune(species_traits, cache, 1, sptree);
 

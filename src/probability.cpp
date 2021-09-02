@@ -6,7 +6,7 @@
 #include "traits.hpp"
 #include "matrix_cache.hpp"
 
-int discretization_range = 100;
+int discretization_range = 50;
 
 double bm_prob(std::pair<double, double> boundses, double t, double sigma_2) {
 
@@ -52,7 +52,10 @@ std::vector<double> pos_bounds(double traitval, int dis_size, boundaries bounds)
 
     std::vector<double> X(dis_size, 0);
 
-    if (traitval == bounds.second) 
+    if (traitval == bounds.first) {
+        X[0] = 1;
+    }
+    else if (traitval == bounds.second) 
     {
         X[dis_size - 1] = 1;
     }
@@ -104,13 +107,14 @@ std::vector<double> inference_prune(const std::vector<trait> t, const matrix_cac
     probabilities for character states at the root of the tree. Currently doesn't have a multiplier for sigma^2, might
     have to work that in later*/ 
 
-    std::map<const clade*, std::vector<double>> probabilities;
+    clademap<std::vector<double>> probabilities;
     auto init_func = [&](const clade* node) { probabilities[node] = std::vector<double> (discretization_range, 0); };
     std::for_each(p_tree->reverse_level_begin(), p_tree->reverse_level_end(), init_func);
+
 
     auto compute_func = [&](const clade* c) { compute_node_probability(c, t, probabilities, sigma_2, cache); };
     std::for_each(p_tree->reverse_level_begin(), p_tree->reverse_level_end(), compute_func);
 
-    return std::vector<double>(probabilities.at(p_tree).data(), probabilities.at(p_tree).data() + probabilities.at(p_tree).size());
+    return probabilities.at(p_tree);
     
 }
