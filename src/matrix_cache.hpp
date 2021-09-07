@@ -18,13 +18,13 @@ public:
     {
         values.resize(_size*_size);
     }
-    void set(int x, int y, double val)
+    void set(double x, double y, double val)
     {
         assert(x < _size);
         assert(y < _size);
         values[x*_size + y] = val;
     }
-    double get(int x, int y) const
+    double get(double x, double y) const
     {
         assert(x < _size);
         assert(y < _size);
@@ -34,7 +34,7 @@ public:
         return _size;
     }
     bool is_zero() const;
-    void multiply(const std::vector<double>& probs, int dis_range, double * result) const;
+    void multiply(const std::vector<double>& probs, int dis_range, double * result, boundaries bounds) const;
 
     int select_random_y(int x, int max) const;
 };
