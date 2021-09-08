@@ -39,7 +39,7 @@ double get_species_trait(std::string species, std::vector<trait> traits) {
 
 std::pair<double, double> get_trait_range(std::vector<trait> t_vector) {
     
-    std::pair<double, double> trait_range;
+    //std::pair<double, double> trait_range;
     std::vector<double> trait_values;
 
     if (!t_vector.empty()){
@@ -49,8 +49,9 @@ std::pair<double, double> get_trait_range(std::vector<trait> t_vector) {
         }
     }
 
-    trait_range.first = *std::min_element(trait_values.begin(), trait_values.end());
-    trait_range.second = *std::max_element(trait_values.begin(), trait_values.end());
+    auto minmax = std::minmax_element(trait_values.begin(), trait_values.end());
+
+    std::pair<double, double> trait_range (*minmax.first, *minmax.second);
 
     return trait_range;
 }

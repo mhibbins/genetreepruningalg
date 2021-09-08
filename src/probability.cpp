@@ -6,7 +6,7 @@
 #include "traits.hpp"
 #include "matrix_cache.hpp"
 
-int discretization_range = 50;
+int discretization_range = 20;
 
 double bm_prob(std::pair<double, double> boundses, double t, double sigma_2) {
 
@@ -75,36 +75,36 @@ std::vector<double> pos_bounds(double traitval, int dis_size, boundaries bounds)
     return X;
 }
 
-void compute_node_probability(const clade* node, const std::vector<trait> traits, 
-    clademap<std::vector<double>> probabilities,
-    const double sigma2, const matrix_cache& cache) 
+std::vector<double> compute_node_probability(const clade* node, const std::vector<trait> traits, 
+    clademap<std::vector<double>> probabilities, const matrix_cache& cache) 
+
 {
     if (node->is_leaf()) {
         double species_trait = get_species_trait(node->get_taxon_name(), traits);
-        probabilities[node] = pos_bounds(species_trait, discretization_range, bounds(traits));
+        return pos_bounds(species_trait, discretization_range, bounds(traits));
     }
     else {
-
         for (auto it = node->descendant_begin(); it != node->descendant_end(); ++it) {
 
-            auto node_probs = probabilities[node];
-            std::fill(node_probs.begin(), node_probs.begin() + discretization_range, 1);
+            //auto node_probs = probabilities[node];
+            //std::fill(node_probs.begin(), node_probs.begin() + discretization_range, 1);
             const matrix* m = cache.get_matrix((*it)->get_branch_length(), bounds(traits));
             
             for (int i = 0; i < probabilities[*it].size(); i++) {
                 //std::cout << probabilities[*it][i]; //why is this printing all 0s? 
             }   
 
-            std::vector<double> result = matrix_multiply(m, probabilities[*it], discretization_range, bounds(traits));
+            return matrix_multiply(m, probabilities[*it], discretization_range, bounds(traits));
             
+            /*
             for (size_t i = 0; i < node_probs.size(); i++) {
                 node_probs[i] *= result[i];
-            }
+            }*/
         }
     }
 }
 
-std::vector<double> inference_prune(const std::vector<trait> t, const matrix_cache& cache, const double sigma_2, const clade* p_tree) {
+std::vector<double> inference_prune(const std::vector<trait> t, const matrix_cache& cache, const clade* p_tree) {
 
     /*Does the pruning alg calc over all nodes of the specified tree for a given input trait. Returns the vector of 
     probabilities for character states at the root of the tree. Currently doesn't have a multiplier for sigma^2, might
@@ -112,10 +112,20 @@ std::vector<double> inference_prune(const std::vector<trait> t, const matrix_cac
 
     clademap<std::vector<double>> probabilities;
 
-    auto init_func = [&](const clade* node) { probabilities[node] = std::vector<double> (discretization_range, 0.5); };
+    auto init_func = [&](const clade* node) { probabilities[node] = std::vector<double> (discretization_range, 0); };
     std::for_each(p_tree->reverse_level_begin(), p_tree->reverse_level_end(), init_func);
 
-    auto compute_func = [&](const clade* c) { compute_node_probability(c, t, probabilities, sigma_2, cache); };
+    auto compute_func = [&](const clade* c) { 
+        probabilities[c] = compute_node_probability(c, t, probabilities, cache);
+
+        /*
+        for (int i = 0; i < probabilities[c].size(); i++) {
+            if (probabilities[c][i] > 0) {
+                std::cout << i << std::endl;
+            }
+        }*/
+    };
+
     std::for_each(p_tree->reverse_level_begin(), p_tree->reverse_level_end(), compute_func);
 
 

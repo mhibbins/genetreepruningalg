@@ -41,7 +41,7 @@ int main(int argc, char *const argv[]){
     boundaries test_bounds = bounds(species_traits); //get upper and lower bounds of trait vector
     std::set<double> test_branch_intervals = get_branch_intervals(sptree, genetrees); //get branch length intervals for matrix cache 
     matrix_cache cache(discretization_range); //inititialize matrix cache
-    cache.precalculate_matrices(1, test_bounds, test_branch_intervals); //fill matrix cache 
+    cache.precalculate_matrices(10, test_bounds, test_branch_intervals); //fill matrix cache 
 
     /*
     double branch_length_test = *test_branch_intervals.begin();
@@ -62,7 +62,7 @@ int main(int argc, char *const argv[]){
         std::cout << pos_test_vector[i] << " ";
     }*/
 
-    std::vector<double> test_ancestral_probs = inference_prune(species_traits, cache, 1, sptree);
+    std::vector<double> test_ancestral_probs = inference_prune(species_traits, cache, sptree);
 
     for (int i = 0; i <= test_ancestral_probs.size(); i++) {
         std::cout << test_ancestral_probs[i] << " ";
