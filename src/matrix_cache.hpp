@@ -34,10 +34,11 @@ public:
         return _size;
     }
     bool is_zero() const;
-    void multiply(const std::vector<double>& probs, int dis_range, double * result, boundaries bounds) const;
 
     int select_random_y(int x, int max) const;
 };
+
+std::vector<double> matrix_multiply(const matrix* m, const std::vector<double>& probs, int dis_range, boundaries bounds);
 
 class matrix_cache_key {
     std::pair<long, long> _bounds;

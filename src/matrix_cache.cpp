@@ -15,7 +15,9 @@ std::ostream& operator<<(std::ostream& ost, const matrix_cache_key& k)
 
 matrix_cache::~matrix_cache() {}
 
-void matrix::multiply(const std::vector<double>& probs, int dis_range, double * result, boundaries bounds) const {
+std::vector<double> matrix_multiply(const matrix* m, const std::vector<double>& probs, int dis_range, boundaries bounds) {
+
+    std::vector<double> result;
 
     std::set<boundaries> dis_bounds = get_discretized_traits(bounds);
 
@@ -26,10 +28,12 @@ void matrix::multiply(const std::vector<double>& probs, int dis_range, double * 
     while (it != dis_bounds.end()) {
          boundaries dis_interval = *it;
          //std::cout << probs[counter] << std::endl; 
-         result[counter] = get(dis_interval.first, dis_interval.second) * probs[counter];
+         result.push_back(m->get(dis_interval.first, dis_interval.second) * probs[counter]);
          counter++;
          it++;
     }
+
+    return result;
 };
 
 
