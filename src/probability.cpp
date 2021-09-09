@@ -6,7 +6,7 @@
 #include "traits.hpp"
 #include "matrix_cache.hpp"
 
-int discretization_range = 20;
+int discretization_range = 50;
 
 double bm_prob(std::pair<double, double> boundses, double t, double sigma_2) {
 
@@ -78,12 +78,16 @@ std::vector<double> pos_bounds(double traitval, int dis_size, boundaries bounds)
 std::vector<double> compute_node_probability(const clade* node, const std::vector<trait> traits, 
     clademap<std::vector<double>> probabilities, const matrix_cache& cache) 
 
-{
+    {
+    std::vector<double> nodeprobs = probabilities[node];
+    std::fill(nodeprobs.begin(), nodeprobs.end(), 1);
+
     if (node->is_leaf()) {
         double species_trait = get_species_trait(node->get_taxon_name(), traits);
-        return pos_bounds(species_trait, discretization_range, bounds(traits));
+        nodeprobs = pos_bounds(species_trait, discretization_range, bounds(traits));
     }
     else {
+        
         for (auto it = node->descendant_begin(); it != node->descendant_end(); ++it) {
 
             //auto node_probs = probabilities[node];
@@ -94,14 +98,15 @@ std::vector<double> compute_node_probability(const clade* node, const std::vecto
                 //std::cout << probabilities[*it][i]; //why is this printing all 0s? 
             }   
 
-            return matrix_multiply(m, probabilities[*it], discretization_range, bounds(traits));
+            std::vector<double> result = matrix_multiply(m, probabilities[*it], discretization_range, bounds(traits));
             
-            /*
-            for (size_t i = 0; i < node_probs.size(); i++) {
-                node_probs[i] *= result[i];
-            }*/
+            for (size_t i = 0; i < nodeprobs.size(); i++) {
+                nodeprobs[i] *= result[i];
+            }
         }
     }
+
+    return nodeprobs;
 }
 
 std::vector<double> inference_prune(const std::vector<trait> t, const matrix_cache& cache, const clade* p_tree) {
@@ -115,20 +120,8 @@ std::vector<double> inference_prune(const std::vector<trait> t, const matrix_cac
     auto init_func = [&](const clade* node) { probabilities[node] = std::vector<double> (discretization_range, 0); };
     std::for_each(p_tree->reverse_level_begin(), p_tree->reverse_level_end(), init_func);
 
-    auto compute_func = [&](const clade* c) { 
-        probabilities[c] = compute_node_probability(c, t, probabilities, cache);
-
-        /*
-        for (int i = 0; i < probabilities[c].size(); i++) {
-            if (probabilities[c][i] > 0) {
-                std::cout << i << std::endl;
-            }
-        }*/
-    };
-
+    auto compute_func = [&](const clade* c) { probabilities[c] = compute_node_probability(c, t, probabilities, cache); };
     std::for_each(p_tree->reverse_level_begin(), p_tree->reverse_level_end(), compute_func);
 
-
-    return std::vector<double>(probabilities.at(p_tree).data(), probabilities.at(p_tree).data() + probabilities.at(p_tree).size());
-    
+    return probabilities.at(p_tree);
 }
