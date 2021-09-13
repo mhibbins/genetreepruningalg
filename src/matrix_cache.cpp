@@ -17,29 +17,23 @@ matrix_cache::~matrix_cache() {}
 
 std::vector<double> matrix_multiply(const matrix* m, const std::vector<double>& probs, int dis_range, boundaries bounds) {
 
-    std::vector<double> result;
+    std::vector<double> result(dis_range, 0);
 
-    std::set<boundaries> dis_bounds = get_discretized_traits(bounds);
+    std::vector<double> dis_vals = get_discretized_traits(bounds);
 
-    std::set<boundaries>::iterator it = dis_bounds.begin();
-
-    int counter = 0;
-
-    while (it != dis_bounds.end()) {
-         boundaries dis_interval = *it;
-         //std::cout << probs[counter] << std::endl; 
-         result.push_back(m->get(dis_interval.first, dis_interval.second) * probs[counter]);
-         counter++;
-         it++;
+    for (int s = 0; s <= dis_vals.size(); s++) {
+        for (int c = 0; c <= dis_vals.size(); c++) {
+            result[s] += m->get(dis_vals[s], dis_vals[c]) * probs[c];
+        }
     }
-
+   
     return result;
 };
 
 
 const matrix* matrix_cache::get_matrix(double branch_length, boundaries bounds) const
 {
-    // cout << "Matrix request " << size << "," << branch_length << "," << lambda << endl;
+    //std::cout << "Matrix request " << bounds << "," << branch_length << "," << lambda << endl;
 
     matrix_cache_key key(bounds, branch_length);
     if (_matrix_cache.find(key) != _matrix_cache.end())
@@ -86,7 +80,7 @@ std::vector<double> matrix_cache::get_cache_sizes() { //debugging function to ge
 void matrix_cache::precalculate_matrices(const double sigma2, const boundaries bounds, const std::set<double>& branch_lengths)
 {
     // build a list of required matrices
-    std::set<boundaries> dis_bounds = get_discretized_traits(bounds);
+    std::vector<double> dis_vals = get_discretized_traits(bounds);
     std::vector<matrix_cache_key> keys;
 
     for (double branch_length : branch_lengths)
@@ -100,7 +94,7 @@ void matrix_cache::precalculate_matrices(const double sigma2, const boundaries b
 
   
     // calculate matrices in parallel
-    std::vector<matrix*> matrices(dis_bounds.size()); //the matrix size is initialized up here. So I should discretize before this step
+    std::vector<matrix*> matrices(dis_vals.size()); //the matrix size is initialized up here. So I should discretize before this step
     generate(matrices.begin(), matrices.end(), [this] { return new matrix(this->_matrix_size); });
 
     int s = 0;
@@ -117,13 +111,15 @@ void matrix_cache::precalculate_matrices(const double sigma2, const boundaries b
             double branch_length = keys[i].branch_length();
 
             matrix* m = matrices[i];
-            std::set<boundaries>::iterator it = dis_bounds.begin();
-            
-            while (it != dis_bounds.end()) {
-                boundaries dis_interval = *it;
-                m->set(dis_interval.first, dis_interval.second, bm_prob(dis_interval, branch_length, sigma2));
-                it++;
-                } //Should now loop over each disretized interval 
+            m->set(0, 0, bm_prob(0, 0, branch_length, sigma2));
+
+            for (int j = 0; j < m->size(); ++j) {
+                m->set(0, dis_vals[j], bm_prob(0, dis_vals[j], branch_length, sigma2));
+            }
+
+            for (int c = 0; c < _matrix_size; c++) {
+                m->set(dis_vals[s], dis_vals[c], bm_prob(dis_vals[s], dis_vals[c], branch_length, sigma2));
+            }
         }
     }
 

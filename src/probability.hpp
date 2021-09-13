@@ -2,11 +2,11 @@
 #include "traits.hpp"
 #include "matrix_cache.hpp"
 
-double bm_prob(std::pair<double, double> boundses, double t, double sigma_2); 
+double bm_prob(double val1, double val2, double t, double sigma_2); 
 
 std::pair<double, double> bounds(std::vector<trait> t_range);
 
-std::set<boundaries> get_discretized_traits(std::pair<double, double> bounds);
+std::vector<double> get_discretized_traits(std::pair<double, double> bounds);
 
 std::vector<double> pos_bounds(double traitval, int dis_size, boundaries bounds);
 
