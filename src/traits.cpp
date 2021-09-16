@@ -6,6 +6,7 @@
 
 #include "io.hpp"
 #include "traits.hpp"
+#include "matrix_cache.hpp"
 
 trait::trait(std::string new_species, double new_trait) {
     _species = new_species;
@@ -37,7 +38,7 @@ double get_species_trait(std::string species, std::vector<trait> traits) {
     }
 }
 
-std::pair<double, double> get_trait_range(std::vector<trait> t_vector) {
+boundaries get_trait_range(std::vector<trait> t_vector) {
     
     //std::pair<double, double> trait_range;
     std::vector<double> trait_values;
@@ -51,7 +52,7 @@ std::pair<double, double> get_trait_range(std::vector<trait> t_vector) {
 
     auto minmax = std::minmax_element(trait_values.begin(), trait_values.end());
 
-    std::pair<double, double> trait_range (*minmax.first, *minmax.second);
+    boundaries trait_range(*minmax.first, *minmax.second);
 
     return trait_range;
 }

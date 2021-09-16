@@ -21,7 +21,7 @@ double bm_prob(double val1, double val2, double t, double sigma_2) {
 
 }
 
-std::pair<double, double> bounds(std::vector<trait> t_range) {
+boundaries bounds(std::vector<trait> t_range) {
 
     std::pair<double, double> dis_bounds (0, 0);
     std::pair<double, double> trait_range = get_trait_range(t_range);
