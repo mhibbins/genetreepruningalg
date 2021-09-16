@@ -21,8 +21,8 @@ std::vector<double> matrix_multiply(const matrix* m, const std::vector<double>& 
 
     std::vector<double> dis_vals = get_discretized_traits(bounds);
 
-    for (int s = 0; s <= dis_vals.size(); s++) {
-        for (int c = 0; c <= dis_vals.size(); c++) {
+    for (int s = 0; s < dis_vals.size(); s++) {
+        for (int c = 0; c < dis_vals.size(); c++) {
             result[s] += m->get(dis_vals[s], dis_vals[c]) * probs[c];
         }
     }
@@ -104,7 +104,7 @@ void matrix_cache::precalculate_matrices(const double sigma2, const boundaries b
 
     for (i = 0; i < num_keys; ++i) 
     {
-        for (s = 1; s < _matrix_size; s++) { 
+        for (s = 0; s < _matrix_size; s++) { 
 
             //Need to write another loop in here to go over each discretized interval. 
             boundaries bounds = keys[i].bounds();

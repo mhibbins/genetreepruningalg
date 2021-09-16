@@ -90,15 +90,7 @@ std::vector<double> compute_node_probability(const clade* node, const std::vecto
     else {
         for (auto it = node->descendant_begin(); it != node->descendant_end(); ++it) {
 
-            //auto node_probs = probabilities[node];
-            //std::fill(node_probs.begin(), node_probs.begin() + discretization_range, 1);
-            //boundaries trait_bounds = bounds(traits);
             const matrix* m = cache.get_matrix((*it)->get_branch_length(), trait_bounds);
-            
-            /*
-            for (int i = 0; i < probabilities[*it].size(); i++) {
-                std::cout << probabilities[*it][i] << " "; //why is this printing all 0s? 
-            }*/
 
             std::vector<double> result = matrix_multiply(m, probabilities[*it], discretization_range, bounds(traits));
             
