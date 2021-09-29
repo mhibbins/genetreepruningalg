@@ -60,6 +60,7 @@ public:
 
     //! Add the descendant clade. Used when constructing a tree
     void add_descendant(clade *p_descendant);
+    void remove_descendant(clade *p_descendant);
 
     //!
     void add_leaf_names(std::vector<std::string>& vector_names);
@@ -114,6 +115,9 @@ public:
     descendant_iterator descendant_end() const {
         return _descendants.end();
     }
+
+    void insert_between(clade* parent, clade* child, double sptime); 
+    void insert_all_between(clade* sptree, clade* genetree);
 };
 
 template<typename T>
@@ -125,6 +129,7 @@ std::string clade_index_or_name(const clade* node, const cladevector& order);
 
 clade* parse_newick(std::string newick_string);
 std::set<double> get_branch_intervals(clade* sptree, std::vector<clade*> genetrees); //returns time intervals for matrix cache
+int count_nodes(const clade* p_tree);
 //inline clade* parse_newick(std::string newick_string) { return parse_newick(newick_string); }
 
 #endif

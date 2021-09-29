@@ -63,6 +63,17 @@ void clade::add_descendant(clade *p_descendant) {
   update_reverse_level_order();
 }
 
+void clade::remove_descendant(clade *p_descendant) {
+    
+  _descendants.erase(std::remove(_descendants.begin(), _descendants.end(), p_descendant), _descendants.end());
+  _name_interior_clade();
+  if (!is_root()) {
+    _p_parent->_name_interior_clade();
+  }
+
+  update_reverse_level_order();
+}
+
 void clade::update_reverse_level_order()
 {
     _reverse_level_order.clear();
@@ -483,4 +494,47 @@ clade* parse_newick(std::string newick_string) {
     for_each(p_root_clade->reverse_level_begin(), p_root_clade->reverse_level_end(), validator);
 
     return p_root_clade;
+}
+
+void clade::insert_between(clade* parent, clade* child, double sptime) {
+
+    parent->remove_descendant(child); //remove child as descendant of parent 
+    clade* c = new clade("c", sptime); //create new clade from timeslice 
+    parent->add_descendant(c); // add new clade as descendant
+    c->add_descendant(child); //add child back as descendant of new node 
+
+} 
+
+void clade::insert_all_between(clade* sptree, clade* genetree) { //function in progress 
+
+    std::set<double> sptimes = sptree->get_speciation_times();
+
+    for (auto it = sptimes.begin(); it != sptimes.end(); it++) {
+        for (auto it2 = genetree->reverse_level_begin(); it2 != genetree->reverse_level_end(); it2++) {
+
+            const clade* gt_parent = *it2;
+            double parent_length = gt_parent->get_branch_length();
+
+            for (auto it3 = gt_parent->descendant_begin(); it3 != gt_parent->descendant_end(); it3++) {
+                const clade* gt_child = *it3;
+                double child_length = gt_child->get_branch_length();
+
+                if (parent_length > *it > child_length) {
+                    genetree->insert_between(gt_parent, gt_child, *it);
+                }
+            }
+        }
+    }
+
+}
+
+int count_nodes(const clade* p_tree) { //debugging function to count nodes in a tree
+    
+    int node_counter = 0;
+
+    for (auto it = p_tree->reverse_level_begin(); it != p_tree->reverse_level_end(); it++) {
+        node_counter += 1;
+    }
+
+    return node_counter;
 }
