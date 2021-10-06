@@ -471,31 +471,29 @@ clade* parse_newick(std::string newick_string) {
         }
     }
 
-    std::function<void(const clade*)> validator;
-    if (p_root_clade->is_lambda_clade)
-    {
-        // since user is not required to set a lambda index for the root, go ahead and assign it to the first lambda
-        // so the rest of the code doesn't get confused
-        if (p_root_clade->get_lambda_index() == 0)
-            p_root_clade->_lambda_index = 1;
-
-        validator = [](const clade* c) {
-            if (c->_lambda_index < 1)
-                throw std::runtime_error("Invalid lambda index set for " + c->get_taxon_name());
-        };
-    }
-    else
-    {
-        validator = [](const clade* c) {
-            if (!c->is_root() && c->get_branch_length() <= 0)
-                throw std::runtime_error("Invalid branch length set for " + c->get_taxon_name());
-        };
-    }
-    for_each(p_root_clade->reverse_level_begin(), p_root_clade->reverse_level_end(), validator);
-
     return p_root_clade;
 }
 
+/*
+std::map<double, std::vector<double>> get_parent_child_lengths(const clade* genetree)
+{
+    std::map<double, std::vector<double>> parent_child_map;
+
+    for (auto it = genetree->reverse_level_begin(); it != genetree->reverse_level_end(); it++) {
+
+        const clade* gt_parent = *it;
+
+        for (auto it2 = gt_parent->descendant_begin(); it2 != gt_parent->descendant_end(); it2++) {
+
+            const clade* gt_child = *it;
+            parent_child_map[gt_parent->get_branch_length()].push_back(gt_child->get_branch_length());
+        }
+    }
+
+    return parent_child_map;
+}*/
+
+/*
 void clade::insert_between(clade* parent, clade* child, double sptime) {
 
     parent->remove_descendant(child); //remove child as descendant of parent 
@@ -503,20 +501,24 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
     parent->add_descendant(c); // add new clade as descendant
     c->add_descendant(child); //add child back as descendant of new node 
 
-} 
+}
 
-void clade::insert_all_between(clade* sptree, clade* genetree) { //function in progress 
+std::vector<clade*> insert_all_between(clade* sptree, clade* genetree, std::map<double, std::vector<double>>) { //function in progress 
 
+    std::vector<clade*> inserted_genetrees;
     std::set<double> sptimes = sptree->get_speciation_times();
 
     for (auto it = sptimes.begin(); it != sptimes.end(); it++) {
         for (auto it2 = genetree->reverse_level_begin(); it2 != genetree->reverse_level_end(); it2++) {
 
-            const clade* gt_parent = *it2;
+            const clade* gt_parent_const = *it2;
+            clade* gt_parent = gt_parent_const;
+
             double parent_length = gt_parent->get_branch_length();
 
             for (auto it3 = gt_parent->descendant_begin(); it3 != gt_parent->descendant_end(); it3++) {
-                const clade* gt_child = *it3;
+
+                clade* gt_child = *it3;
                 double child_length = gt_child->get_branch_length();
 
                 if (parent_length > *it > child_length) {
@@ -527,6 +529,7 @@ void clade::insert_all_between(clade* sptree, clade* genetree) { //function in p
     }
 
 }
+*/
 
 int count_nodes(const clade* p_tree) { //debugging function to count nodes in a tree
     

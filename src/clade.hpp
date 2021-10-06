@@ -116,8 +116,7 @@ public:
         return _descendants.end();
     }
 
-    void insert_between(clade* parent, clade* child, double sptime); 
-    void insert_all_between(clade* sptree, clade* genetree);
+    //void insert_between(clade* parent, clade* child, double sptime); 
 };
 
 template<typename T>
@@ -130,6 +129,8 @@ std::string clade_index_or_name(const clade* node, const cladevector& order);
 clade* parse_newick(std::string newick_string);
 std::set<double> get_branch_intervals(clade* sptree, std::vector<clade*> genetrees); //returns time intervals for matrix cache
 int count_nodes(const clade* p_tree);
+//std::vector<clade*> insert_all_between(clade* sptree, clade* genetree, std::map<double, std::vector<double>>);
+//std::map<double, std::vector<double>> get_parent_child_lengths(const clade* genetree);
 //inline clade* parse_newick(std::string newick_string) { return parse_newick(newick_string); }
 
 #endif
