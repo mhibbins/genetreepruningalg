@@ -43,12 +43,15 @@ int main(int argc, char *const argv[]){
     matrix_cache cache(discretization_range); //inititialize matrix cache
     cache.precalculate_matrices(1, test_bounds, test_branch_intervals); //fill matrix cache 
 
-    //std::vector<double> test_ancestral_probs = inference_prune(species_traits, cache, sptree);
+    std::vector<double> test_sptree_probs = inference_prune(species_traits, cache, sptree);
+    //std::vector<double> test_genetree_probs = inference_prune(species_traits, cache, genetrees[2]);
+    std::vector<double> test_genetree_probs = inference_prune_genetrees(species_traits, cache, genetrees);
 
-    /*
-    for (int i = 0; i < test_ancestral_probs.size(); i++) {
-        std::cout << test_ancestral_probs[i] << " ";
-    }*/
+    for (int i = 0; i < test_sptree_probs.size(); i++) {
+        std::cout << test_sptree_probs[i] << ", " << test_genetree_probs[i] << std::endl;
+    }
+
+
 
     return 0;
 }

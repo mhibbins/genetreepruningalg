@@ -13,3 +13,4 @@ std::vector<double> pos_bounds(double traitval, int dis_size, boundaries bounds)
 void compute_node_probability(const clade* node, const trait trait, const matrix_cache& cache);
 
 std::vector<double> inference_prune(const std::vector<trait> t, const matrix_cache& cache, const clade* p_tree);
+std::vector<double> inference_prune_genetrees(std::vector<trait> t, const matrix_cache& cache, const std::vector<clade*> p_trees);
