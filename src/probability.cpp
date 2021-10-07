@@ -6,7 +6,7 @@
 #include "traits.hpp"
 #include "matrix_cache.hpp"
 
-int discretization_range = 50;
+int discretization_range = 100;
 
 double bm_prob(double val1, double val2, double t, double sigma_2) {
 
