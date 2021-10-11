@@ -120,14 +120,14 @@ std::vector<double> inference_prune(std::vector<trait> t, const matrix_cache& ca
     return probabilities.at(p_tree);
 }
 
-std::vector<double> inference_prune_genetrees(std::vector<trait> t, const matrix_cache& cache, const std::vector<clade*> p_trees) {
+std::vector<double> inference_prune_genetrees(std::vector<trait> t, const matrix_cache& cache, 
+                                              const std::vector<clade*> p_trees, std::vector<double> genetree_freqs) {
 
     /*Does the pruning alg calc over all nodes of the specified tree for a given input trait. Returns the vector of 
     probabilities for character states at the root of the tree. Currently doesn't have a multiplier for sigma^2, might
     have to work that in later*/ 
 
     std::vector<double> summed_root_probs(discretization_range, 0);
-    std::vector<double> genetree_freqs {0.451, 0.183, 0.183, 0.18}; //need to handle freqs in a general way later on
 
     for (int i = 0; i < p_trees.size(); i++) {
 

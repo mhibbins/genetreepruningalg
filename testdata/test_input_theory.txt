@@ -1,17 +1,17 @@
 #NEXUS 
 begin sptree;
-(sp2:0.6,(sp3:0.3,sp4:0.3):0.3);
+(sp2:1.2,(sp3:0.6,sp4:0.6):0.6);
 end;
 
 begin genetrees;
-(sp2:1.1,(sp3:0.435,sp4:0.435):0.665);
-(sp2:1.266,(sp3:0.766,sp4:0.766):0.5);
-(sp3:1.266,(sp2:0.766,sp4:0.766):0.5);
-(sp4:1.266,(sp2:0.766,sp3:0.766):0.5);
+(sp2:2.2,(sp3:0.87,sp4:0.87):1.23);
+(sp2:2.532,(sp3:1.532,sp4:1.532):1);
+(sp3:2.532,(sp2:1.532,sp4:1.532):1);
+(sp4:2.532,(sp2:1.532,sp3:1.532):1);
 end; 
 
 begin traits;
-set trait sp2 = -0.238
-set trait sp3 = -0.696
-set trait sp4 = -1.517
+set trait sp2 = 0.238
+set trait sp3 = 0.696
+set trait sp4 = 1.517
 end;
