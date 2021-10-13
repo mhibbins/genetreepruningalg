@@ -230,6 +230,26 @@ void clade::write_newick(std::ostream& ost, std::function<std::string(const clad
     }
 }
 
+double clade::distance_from_root_to_tip() const
+{
+    std::vector<double> candidates;
+    apply_prefix_order([&candidates](const clade* c) {
+        if (c->is_leaf())
+        {
+            auto p = c;
+            double dist = 0;
+            while (p)
+            {
+                dist += p->get_branch_length();
+                p = p->get_parent();
+            }
+            candidates.push_back(dist);
+        }
+        });
+
+    return *std::max_element(candidates.begin(), candidates.end());
+}
+
 std::string clade_index_or_name(const clade* node, const cladevector& order)
 {
     auto id = distance(order.begin(), find(order.begin(), order.end(), node));
