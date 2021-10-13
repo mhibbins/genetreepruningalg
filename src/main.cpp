@@ -11,6 +11,8 @@
 #include "traits.hpp"
 #include "matrix_cache.hpp"
 #include "probability.hpp"
+#include "likelihood.hpp"
+#include "optimizer_scorer.hpp"
 
 extern int discretization_range;
 
@@ -38,22 +40,11 @@ int main(int argc, char *const argv[]){
     }
 
     auto [sptree, genetrees, species_traits] = read_data(input_file); //parses input file 
-    boundaries test_bounds = bounds(species_traits); //get upper and lower bounds of trait vector
-    std::set<double> test_branch_intervals = get_branch_intervals(sptree, genetrees); //get branch length intervals for matrix cache 
-    matrix_cache cache(discretization_range); //inititialize matrix cache
-    cache.precalculate_matrices(0.5, test_bounds, test_branch_intervals); //fill matrix cache 
-    std::vector<double> dis_vals = get_discretized_traits(test_bounds);
-
-    std::vector<double> test_sptree_probs = inference_prune(species_traits, cache, sptree);
-    //std::vector<double> test_genetree_probs = inference_prune(species_traits, cache, genetrees[2]);
     std::vector<double> genetree_freqs {0.451, 0.183, 0.183, 0.18};
-    std::vector<double> test_genetree_probs = inference_prune_genetrees(species_traits, cache, genetrees, genetree_freqs);
 
+    double test_likelihood = infer_trait_likelihood(sptree, genetrees, species_traits, 0.5, genetree_freqs);
 
-    /*
-    for (int i = 0; i < test_sptree_probs.size(); i++) {
-        std::cout << test_sptree_probs[i] << ", " << test_genetree_probs[i] << ", " << dis_vals[i] << std::endl;
-    }*/
+    std::cout << test_likelihood << std::endl;
 
 
 
