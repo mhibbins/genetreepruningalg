@@ -3,7 +3,7 @@ class optimizer_scorer {
 public: 
     virtual ~optimizer_scorer() {}
 
-    virtual std::vector<double> initial_guesses() = 0;
+    virtual double initial_guesses() = 0;
 
     virtual double calculate_score(const double *values) = 0;
 };
@@ -11,7 +11,7 @@ public:
 
 class inference_optimizer_scorer : public optimizer_scorer {
 protected:
-    virtual void prepare_calculation(const double *values) = 0;
+    virtual void prepare_calculation(double *values) = 0;
     virtual void report_precalculation() = 0;
 
     double* _p_sigma;
@@ -31,7 +31,7 @@ public:
 
     virtual ~inference_optimizer_scorer() {}
 
-    double calculate_score(const double *values);
+    double calculate_score(double *values);
 
     virtual void finalize(double *result) = 0;
 
@@ -55,11 +55,11 @@ public:
                           
     //why is this declared twice? 
 
-    std::vector<double> initial_guesses() override;
+    double initial_guesses() override;
 
     virtual void finalize(double *results) override;
 
-    virtual void prepare_calculation(const double *values) override;
+    virtual void prepare_calculation(double *values) override;
     virtual void report_precalculation() override;
 
 };
