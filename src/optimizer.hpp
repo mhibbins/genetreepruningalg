@@ -1,3 +1,6 @@
+#ifndef FMINSEARCH_H
+#define FMINSEARCH_H
+
 #include <vector>
 #include <map>
 #include <chrono>
@@ -64,6 +67,8 @@ void __fminsearch_set_last_element(FMinSearch* pfm, double* x, double f);
 bool threshold_achieved(FMinSearch* pfm);
 int fminsearch_min(FMinSearch* pfm, double* X0, std::function<bool(FMinSearch*)> threshold_func = threshold_achieved);
 
+class OptimizerStrategy;
+
 class optimizer {
     FMinSearch* pfm;
     optimizer_scorer *_p_scorer;
@@ -82,5 +87,33 @@ public:
 
     std::vector<double> get_intial_guesses();
 
-    OptimizerStrategy* get_strategy(const optimizer_parameters& params); //not sure where this class comes from
+    OptimizerStrategy* get_strategy(const optimizer_parameters& params); 
 };
+
+class OptimizerStrategy {
+public:
+    virtual void Run(FMinSearch* pfm, optimizer::result& r, std::vector<double>& initial) = 0;
+    virtual std::string Description() const = 0;
+    virtual ~OptimizerStrategy() {}
+};
+
+class NelderMeadSimilarityCutoff : public OptimizerStrategy {
+    std::deque<double> scores;
+public: 
+    void Run(FMinSearch* pfm, optimizer::result& r, std::vector<double>& initial) override;
+    bool threshold_achieved_checking_similarity(FMinSearch* pfm);
+    virtual std::string Description() const override {return "Nelder-Mead with similarity cutoff"; };
+};
+
+std::ostream& operator<<(std::ostream& ost, const optimizer::result& r);
+
+class OptimizerInitializationFailure : public std::runtime_error {
+public:
+    OptimizerInitializationFailure(): std::runtime_error("Failed to initialize any reasonable values")
+    {
+    }
+};
+
+#define OPTIMIZER_SIMILARITY_CUTOFF_SIZE 15
+
+#endif
