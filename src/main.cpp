@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <tuple>
+#include <random>
 
 #include <getopt.h>
 
@@ -15,6 +16,8 @@
 #include "optimizer_scorer.hpp"
 
 extern int discretization_range;
+std::random_device rd;
+std::mt19937 randomizer_engine(rd());
 
 input_parameters read_arguments(int argc, char *const argv[])
 {

@@ -85,14 +85,14 @@ public:
 
     result optimize(const optimizer_parameters& params);
 
-    std::vector<double> get_intial_guesses();
+    double get_initial_guesses();
 
     OptimizerStrategy* get_strategy(const optimizer_parameters& params); 
 };
 
 class OptimizerStrategy {
 public:
-    virtual void Run(FMinSearch* pfm, optimizer::result& r, std::vector<double>& initial) = 0;
+    virtual void Run(FMinSearch* pfm, optimizer::result& r, double& initial) = 0;
     virtual std::string Description() const = 0;
     virtual ~OptimizerStrategy() {}
 };
@@ -100,7 +100,7 @@ public:
 class NelderMeadSimilarityCutoff : public OptimizerStrategy {
     std::deque<double> scores;
 public: 
-    void Run(FMinSearch* pfm, optimizer::result& r, std::vector<double>& initial) override;
+    void Run(FMinSearch* pfm, optimizer::result& r, double& initial) override;
     bool threshold_achieved_checking_similarity(FMinSearch* pfm);
     virtual std::string Description() const override {return "Nelder-Mead with similarity cutoff"; };
 };

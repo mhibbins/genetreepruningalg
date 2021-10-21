@@ -1,3 +1,8 @@
+#include "clade.hpp"
+#include "traits.hpp"
+#include "matrix_cache.hpp"
+#include "probability.hpp"
+#include "likelihood.hpp"
 
 class optimizer_scorer {
 public: 

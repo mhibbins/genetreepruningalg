@@ -1,7 +1,6 @@
 #include <random>
+#include <iostream>
 
-#include "io.hpp"
-#include "user_data.hpp"
 #include "clade.hpp"
 #include "traits.hpp"
 #include "matrix_cache.hpp"
@@ -14,6 +13,8 @@ extern std::mt19937 randomizer_engine;
 double inference_optimizer_scorer::calculate_score(double *values) {
 
     prepare_calculation(values);
+
+    report_precalculation();
 
     double score = infer_trait_likelihood(_sp_tree, _genetrees, _traits, *_p_sigma, _genetree_freqs);
 
@@ -53,6 +54,10 @@ double sigma_optimizer_scorer::initial_guesses() {
 void sigma_optimizer_scorer::prepare_calculation(double *values) {
     _p_sigma = values;
 };
+
+void sigma_optimizer_scorer::report_precalculation() {
+    std::cout << "Sigma^2: " << *_p_sigma;
+}
 
 void sigma_optimizer_scorer::finalize(double *results) {
     _p_sigma = results;
