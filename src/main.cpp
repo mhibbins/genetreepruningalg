@@ -45,8 +45,7 @@ int main(int argc, char *const argv[]){
     }
 
     auto [sptree, genetrees, species_traits] = read_data(input_file); //parses input file 
-    std::vector<double> genetree_freqs {0.451, 0.183, 0.183, 0.18};
-
+    std::vector<double> genetree_freqs {0.451, 0.183, 0.183, 0.183};
     double sigma2_guess = 0;
 
     std::unique_ptr<inference_optimizer_scorer> test_scorer(new sigma_optimizer_scorer(&sigma2_guess, sptree, genetrees, species_traits, genetree_freqs));

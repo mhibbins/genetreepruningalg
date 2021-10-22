@@ -13,7 +13,7 @@ double get_likelihood (std::vector<double> root_probs) {
 
     double likelihood = *std::max_element(root_probs.begin(), root_probs.end());
 
-    double log_likelihood = log(likelihood);
+    double log_likelihood = -std::log(likelihood);
 
     return log_likelihood;
 }

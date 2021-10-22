@@ -20,6 +20,8 @@ double inference_optimizer_scorer::calculate_score(double *values) {
 
     if (std::isnan(score)) score = -log(0);
 
+    std::cout << score << std::endl;
+
     return score;
 };
 
@@ -56,7 +58,7 @@ void sigma_optimizer_scorer::prepare_calculation(double *values) {
 };
 
 void sigma_optimizer_scorer::report_precalculation() {
-    std::cout << "Sigma^2: " << *_p_sigma;
+    std::cout << "Sigma^2: " << *_p_sigma << std::endl;
 }
 
 void sigma_optimizer_scorer::finalize(double *results) {
