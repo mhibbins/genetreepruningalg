@@ -10,7 +10,7 @@ public:
 
     virtual double initial_guesses() = 0;
 
-    virtual double calculate_score(const double *values) = 0;
+    virtual double calculate_score(double *values) = 0;
 };
 
 

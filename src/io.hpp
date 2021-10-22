@@ -3,6 +3,8 @@
 #include <fstream>
 #include <tuple>
 
+#include "optimizer.hpp"
+
 extern struct option longopts[];
 
 class clade;
@@ -17,6 +19,7 @@ std::vector<std::string> simple_tokenizer(std::string s);
 struct input_parameters {
 public:	
     std::string input_file_path;
+    optimizer_parameters optimizer_params;
     bool help = false;
     //void check_input();
 };
