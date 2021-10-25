@@ -1,0 +1,15 @@
+#NEXUS 
+begin sptree;
+(sp1:4.0,(sp2:0.6,(sp3:0.3,sp4:0.3):0.3):3.4);
+end;
+
+begin genetrees;
+(sp1:4.439,(sp2:1.649,(sp3:0.811,sp4:0.811):0.838):2.790);
+end; 
+
+begin traits;
+set trait sp1 = 3.2
+set trait sp2 = 1.5
+set trait sp3 = 1.1
+set trait sp4 = 0.9
+end;
