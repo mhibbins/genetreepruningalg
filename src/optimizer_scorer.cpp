@@ -9,6 +9,7 @@
 #include "optimizer_scorer.hpp"
 
 extern std::mt19937 randomizer_engine;
+extern std::string TREE_STRUCT;
 
 double inference_optimizer_scorer::calculate_score(double *values) {
 
@@ -17,6 +18,8 @@ double inference_optimizer_scorer::calculate_score(double *values) {
     report_precalculation();
 
     double score = infer_trait_likelihood(_sp_tree, _genetrees, _traits, *_p_sigma, _genetree_freqs);
+    //double score = infer_trait_likelihood_genetrees(_sp_tree, _genetrees, _traits, *_p_sigma, _genetree_freqs);
+    //double score = infer_trait_likelihood_sptree(_sp_tree, _genetrees, _traits, *_p_sigma, _genetree_freqs);
 
     if (std::isnan(score)) score = -log(0);
 

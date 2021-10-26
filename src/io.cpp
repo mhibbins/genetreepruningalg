@@ -10,9 +10,26 @@
 #include "clade.hpp"
 #include "traits.hpp"
 
+std::string TREE_STRUCT = "genetrees";
+
 struct option longopts[] = {
-  { "infile", required_argument, NULL, 'i' }
+  { "infile", required_argument, NULL, 'i' },
+  { "tree_struct", required_argument, NULL, 't'}
 };
+
+input_parameters read_arguments(int argc, char *const argv[])
+{
+    input_parameters my_input_parameters;
+    if (argc == 1)
+    {
+        my_input_parameters.help = true;
+        return my_input_parameters;
+    }
+    my_input_parameters.input_file_path = argv[1];
+    my_input_parameters.tree_structure = argv[2];
+
+    return my_input_parameters;
+}
 
 std::ostream& operator<<(std::ostream &out, clade* my_clade) {
   out << my_clade->is_root();
@@ -38,7 +55,20 @@ std::vector<std::string> simple_tokenizer(std::string s) {
   return line_vector;
 }
 
-std::tuple<clade*, std::vector<clade*>, std::vector<trait>> read_data(std::istream& input_file){ //parses data from input file 
+std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<trait>> read_data(int argc, char *const argv[]){ //parses data from input file 
+
+  input_parameters user_input = read_arguments(argc, argv); //reads command line arguments
+  std::ifstream input_file(user_input.input_file_path); //gets input file argument
+    
+  if (user_input.help == true) { //checks if input file is specified 
+      std::cout << "No input file specified" << std::endl;
+  }
+
+  TREE_STRUCT = user_input.tree_structure;
+
+  if ((TREE_STRUCT != "sptree") && (TREE_STRUCT != "genetrees")) { //checks if tree structure arg is valid
+      std::cout << "Invalid argument to tree structure" << std::endl;
+  }
 
   std::string line;
   std::string header;
@@ -84,5 +114,5 @@ std::tuple<clade*, std::vector<clade*>, std::vector<trait>> read_data(std::istre
     }
   
   }
-  return {sptree, genetrees, species_traits};  
+  return {user_input, sptree, genetrees, species_traits};  
 }

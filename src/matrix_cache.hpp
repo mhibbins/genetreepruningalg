@@ -67,7 +67,6 @@ If the given parameters have already been calculated, will return the cached val
 class matrix_cache {
 private:
     std::map<matrix_cache_key, matrix*> _matrix_cache; //!< nested map that stores transition probabilities for a given lambda and branch_length (outer), then for a given parent and child size (inner)
-    double _sigma_squared;
     int _matrix_size; 
 public:
     void precalculate_matrices(const double sigma2, const boundaries bounds, const std::set<double>& branch_lengths);

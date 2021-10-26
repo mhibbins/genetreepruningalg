@@ -2,8 +2,6 @@
 #include <vector>
 #include <string>
 
-
-#include "user_data.hpp"
 #include "io.hpp"
 
 void user_data::read_inputfile(const input_parameters &my_input_parameters) {

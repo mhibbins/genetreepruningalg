@@ -4,13 +4,14 @@
 #include <tuple>
 
 #include "optimizer.hpp"
+#include "user_data.hpp"
 
 extern struct option longopts[];
 
 class clade;
 class trait;
 
-std::tuple<clade*, std::vector<clade*>, std::vector<trait>> read_data(std::istream& input_file);
+std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<trait>> read_data(int argc, char *const argv[]);
 
 std::ostream& operator<<(std::ostream &out, clade* my_clade);
 std::string clade_to_string(clade* my_clade);
@@ -20,6 +21,7 @@ struct input_parameters {
 public:	
     std::string input_file_path;
     optimizer_parameters optimizer_params;
+    std::string tree_structure;
     bool help = false;
     //void check_input();
 };

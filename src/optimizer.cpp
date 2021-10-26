@@ -18,6 +18,7 @@
 #define OPTIMIZER_HIGH_PRECISION 1e-6
 #define PHASED_OPTIMIZER_PHASE1_ATTEMPTS 4
 
+extern std::string TREE_STRUCT;
 const double MAX_DOUBLE = std::numeric_limits<double>::max();
 
 optimizer_parameters::optimizer_parameters() : neldermead_expansion(2.0), neldermead_reflection(1.0)

@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 
+
 struct input_parameters;
 
 class user_data {

@@ -11,7 +11,7 @@ begin genetrees;
 end; 
 
 begin traits;
-set trait sp2 = 1.181
-set trait sp3 = 3.336
-set trait sp4 = 2.285
+set trait sp2 = 0.238
+set trait sp3 = 0.696
+set trait sp4 = 1.517
 end;
