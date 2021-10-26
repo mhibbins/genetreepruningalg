@@ -1,6 +1,6 @@
 remove(list=ls())
-library(tidyverse)
-library(MASS)
+suppressMessages(suppressWarnings(library(tidyverse, warn.conflicts = F, quietly = T)))
+library(MASS, warn.conflicts = F, quietly = T)
 
 sim_BM <- function(t1, t2, tm, delta2, delta3, sigma2, n_traits) {
   

@@ -11,7 +11,7 @@ def read_traits(Routput):
 
 def write_input(traits, filename):
 
-    with open(filename, 'a') as inputfile:
+    with open(filename, 'w') as inputfile:
 
         inputfile.write("NEXUS\n")
         inputfile.write("begin sptree;\n")
