@@ -52,7 +52,7 @@ allpos = FALSE
 
 while (allpos == FALSE) {
   
-  test_traits <- sim_BM(0.6, 1.2, 0, 0, 0, 0.5, 1)
+  test_traits <- sim_BM(0.6, 1.2, 0, 0, 0, 10, 1)
   
   if (test_traits[1] > 0 & test_traits[2] > 0 & test_traits[3] > 0) {
     allpos = TRUE
