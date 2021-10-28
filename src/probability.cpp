@@ -25,8 +25,17 @@ boundaries bounds(std::vector<trait> t_range) {
 
     std::pair<double, double> dis_bounds (0, 0);
     std::pair<double, double> trait_range = get_trait_range(t_range);
-    dis_bounds.first = 0.5*trait_range.first;
-    dis_bounds.second = 1.5*trait_range.second;
+
+    if ((trait_range.first < 0) && (trait_range.second < 0)) {
+        dis_bounds.first = 1.5*trait_range.first;
+        dis_bounds.second = 0.5*trait_range.second;
+    } else if ((trait_range.first < 0) && (trait_range.second > 0)) {
+        dis_bounds.first = 1.5*trait_range.first;
+        dis_bounds.second = 1.5*trait_range.second;
+    } else if ((trait_range.first > 0) && (trait_range.second > 0)) {
+        dis_bounds.first = 0.5*trait_range.first;
+        dis_bounds.second = 1.5*trait_range.second;
+    }
 
     return dis_bounds;
 

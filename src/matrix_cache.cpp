@@ -113,11 +113,11 @@ void matrix_cache::precalculate_matrices(const double sigma2, const boundaries b
             m->set(0, 0, bm_prob(0, 0, branch_length, sigma2));
 
             for (int j = 0; j < m->size(); ++j) {
-                m->set(0, dis_vals[j], bm_prob(0, dis_vals[j], branch_length, sigma2));
+                m->set(0, j, bm_prob(0, dis_vals[j], branch_length, sigma2));
             }
 
             for (int c = 0; c < _matrix_size; c++) {
-                m->set(dis_vals[s], dis_vals[c], bm_prob(dis_vals[s], dis_vals[c], branch_length, sigma2));
+                m->set(s, c, bm_prob(dis_vals[s], dis_vals[c], branch_length, sigma2));
             }
         }
     }
