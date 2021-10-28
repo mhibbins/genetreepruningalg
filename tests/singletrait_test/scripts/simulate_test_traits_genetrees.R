@@ -48,20 +48,6 @@ sim_BM <- function(t1, t2, tm, delta2, delta3, sigma2, n_traits) {
   
 }
 
-allpos = FALSE
-
-while (allpos == FALSE) {
+test_traits <- sim_BM(0.6, 1.2, 0, 0, 0, 10, 1)
   
-  test_traits <- sim_BM(0.6, 1.2, 0, 0, 0, 10, 1)
-  
-  if (test_traits[1] > 0 & test_traits[2] > 0 & test_traits[3] > 0) {
-    allpos = TRUE
-  }
-  else if (test_traits[1] < 0 & test_traits[2] < 0 & test_traits[3] < 0){
-    test_traits <- -test_traits
-    allpos = TRUE
-  }
-  
-}
-
 print(test_traits)

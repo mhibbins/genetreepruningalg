@@ -13,7 +13,7 @@ do
 
 	#Run inference and parse out the results 
 	echo "Doing species tree inference..."
-	../../../src/test.exe test_input_$i.txt sptree | python3 parse_pruningalg_output.py sptree $i >> singletrait_sigma0.5_sptreesims_test_results.txt
+	../../../src/test.exe test_input_$i.txt sptree | python3 parse_pruningalg_output.py sptree $i >> singletrait_sigma10_sptreesims_test_results.txt
 	#echo "Doing gene tree inference..."
 	#../../../src/test.exe test_input_$i.txt genetrees | python3 parse_pruningalg_output.py genetrees $i >> singletrait_sigma10_test_results.txt
 	rm test_input_$i.txt

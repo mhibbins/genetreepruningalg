@@ -5,8 +5,8 @@ library(MASS, warn.conflicts = F, quietly = T)
 sim_BM <- function(t1, t2, sigma2, n_traits) {
   
  
-  cov_AB = t2-t1
-  var_all <- t2
+  cov_AB = sigma2*(t2-t1)
+  var_all <- sigma2*t2
   
   var_covar <- matrix(c(var_all, cov_AB, 0,
                         cov_AB, var_all, 0,
@@ -23,18 +23,6 @@ sim_BM <- function(t1, t2, sigma2, n_traits) {
 
 allpos = FALSE
 
-while (allpos == FALSE) {
+test_traits <- sim_BM(0.6, 1.2, 10, 1)
   
-  test_traits <- sim_BM(0.6, 1.2, 10, 1)
-  
-  if (test_traits[1] > 0 & test_traits[2] > 0 & test_traits[3] > 0) {
-    allpos = TRUE
-  }
-  else if (test_traits[1] < 0 & test_traits[2] < 0 & test_traits[3] < 0){
-    test_traits <- -test_traits
-    allpos = TRUE
-  }
-  
-}
-
 print(test_traits)
