@@ -5,6 +5,7 @@
 #include <vector> 
 #include <set>
 #include <cassert>
+#include <iostream>
 
 
 using boundaries = std::pair<double, double>;

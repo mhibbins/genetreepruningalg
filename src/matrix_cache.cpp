@@ -101,7 +101,6 @@ void matrix_cache::precalculate_matrices(const double sigma2, const boundaries b
     size_t i = 0;
     size_t num_keys = keys.size();
 
-
     for (i = 0; i < num_keys; ++i) 
     {
         for (s = 0; s < _matrix_size; s++) { 
