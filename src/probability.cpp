@@ -12,7 +12,7 @@ double bm_prob(double val1, double val2, double t, double sigma_2) {
 
     double result = 0.0; 
 
-    double part1 = 1/(2*M_PI*t*sqrt(sigma_2));
+    double part1 = 1/(sqrt(2*M_PI*t)*sqrt(sigma_2));
     double part2 = -1*((pow(val2-val1, 2.0))/(2*sigma_2*t));
 
     result = part1*exp(part2);
