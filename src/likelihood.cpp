@@ -61,3 +61,37 @@ double infer_trait_likelihood(clade* sptree, std::vector<clade*> genetrees, std:
     return likelihood;
     
 }
+
+std::pair<std::vector<double>, std::vector<double>> get_likelihood_surface(clade* sptree, std::vector<clade*> genetrees, std::vector<trait> traits,
+                                            std::pair<double, double> sigma2_range, std::vector<double> genetree_freqs) {
+    
+    std::pair<std::vector<double>, std::vector<double>> surface;
+    std::vector<double> sigma2_vector;
+    double step = sigma2_range.first;
+    float range = sigma2_range.second - sigma2_range.first;
+    float stepsize = range/100;
+
+    while(step < sigma2_range.second) {
+        sigma2_vector.push_back(step + stepsize);
+        step += stepsize;
+    }
+
+    surface.first = sigma2_vector;
+
+    std::vector<double> likelihoods;
+
+    if (TREE_STRUCT == "sptree") {
+        for (int i = 0; i < sigma2_vector.size(); i++) {
+            likelihoods.push_back(infer_trait_likelihood_sptree(sptree, genetrees, traits, sigma2_vector[i], genetree_freqs));
+        }
+    }
+    else if (TREE_STRUCT == "genetrees") {
+        for (int i = 0; i < sigma2_vector.size(); i++) {
+            likelihoods.push_back(infer_trait_likelihood_genetrees(sptree, genetrees, traits, sigma2_vector[i], genetree_freqs));
+        }
+    }
+
+    surface.second = likelihoods;
+
+    return surface;
+}
