@@ -35,7 +35,7 @@ int main(int argc, char *const argv[]){
     auto test_result = test_opt.optimize(user_input.optimizer_params); 
     test_scorer->finalize(&test_result.values[0]);*/
 
-    std::pair<double, double> sigma2_range(0, 20);
+    std::pair<double, double> sigma2_range(1, 1.01);
 
     std::pair<std::vector<double>, std::vector<double>> likelihood_surface;
 
@@ -44,7 +44,6 @@ int main(int argc, char *const argv[]){
     for (int i = 0; i < likelihood_surface.first.size(); i++) {
         std::cout << likelihood_surface.first[i] << " " << likelihood_surface.second[i] << std::endl;
     }
-
 
 
 

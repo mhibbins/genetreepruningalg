@@ -109,6 +109,15 @@ std::vector<double> compute_node_probability(const clade* node, const std::vecto
         }
     }
 
+    /*
+    std::cout << node->get_taxon_name() << std::endl;
+
+    for (int i = 0; i < nodeprobs.size(); i++) {
+        std::cout << nodeprobs[i] << " ";
+    }
+
+    std::cout << std::endl;*/
+
     return nodeprobs;
 }
 
