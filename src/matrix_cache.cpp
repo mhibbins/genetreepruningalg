@@ -23,7 +23,7 @@ std::vector<double> matrix_multiply(const matrix* m, const std::vector<double>& 
 
     for (int s = 0; s < dis_vals.size(); s++) {
         for (int c = 0; c < dis_vals.size(); c++) {
-            result[s] += m->get(dis_vals[s], dis_vals[c]) * probs[c];
+            result[s] += m->get(s, c) * probs[c];
         }
     }
    
@@ -94,7 +94,7 @@ void matrix_cache::precalculate_matrices(const double sigma2, const boundaries b
 
   
     // calculate matrices in parallel
-    std::vector<matrix*> matrices(dis_vals.size()); //the matrix size is initialized up here. So I should discretize before this step
+    std::vector<matrix*> matrices(keys.size()); //the matrix size is initialized up here. So I should discretize before this step
     generate(matrices.begin(), matrices.end(), [this] { return new matrix(this->_matrix_size); });
 
     int s = 0;
@@ -105,7 +105,6 @@ void matrix_cache::precalculate_matrices(const double sigma2, const boundaries b
     {
         for (s = 0; s < _matrix_size; s++) { 
 
-            //Need to write another loop in here to go over each discretized interval. 
             boundaries bounds = keys[i].bounds();
             double branch_length = keys[i].branch_length();
 
