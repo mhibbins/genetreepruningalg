@@ -47,12 +47,13 @@ std::vector<double> get_discretized_traits(std::pair<double, double> bounds) {
     double step = bounds.first;
     float range = bounds.second - bounds.first;
     float stepsize = range/discretization_range;
+    int nsteps = 0;
 
-    while(step < bounds.second) {
+    while(nsteps < discretization_range) {
         dis_trait_vector.push_back(step + stepsize);
         step += stepsize;
+        nsteps += 1;
     }
-
 
     return dis_trait_vector;
 }
