@@ -29,14 +29,14 @@ int main(int argc, char *const argv[]){
     double sigma2_guess = 0;
 
 
+
     std::unique_ptr<inference_optimizer_scorer> test_scorer(new sigma_optimizer_scorer(&sigma2_guess, sptree, genetrees, species_traits, genetree_freqs));
     optimizer test_opt(test_scorer.get());
     auto test_result = test_opt.optimize(user_input.optimizer_params); 
     test_scorer->finalize(&test_result.values[0]);
 
-
     /*
-    std::pair<double, double> sigma2_range(0.1, 20);
+    std::pair<double, double> sigma2_range(0.01, 2);
 
     std::pair<std::vector<double>, std::vector<double>> likelihood_surface;
 
@@ -45,8 +45,6 @@ int main(int argc, char *const argv[]){
     for (int i = 0; i < likelihood_surface.first.size(); i++) {
         std::cout << likelihood_surface.first[i] << " " << likelihood_surface.second[i] << std::endl;
     }*/
-
-
 
     return 0;
 }

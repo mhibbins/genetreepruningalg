@@ -24,6 +24,18 @@ double bm_prob(double val1, double val2, double t, double sigma_2) {
 boundaries bounds(std::vector<trait> t_range) {
 
     std::pair<double, double> dis_bounds (0, 0);
+    std::vector<double> abs_vals;
+
+    for (int i = 0; i < t_range.size(); i++) {
+        abs_vals.push_back(std::abs(t_range[i].get_trait_val()));
+    }
+
+    double max_val = *std::max_element(abs_vals.begin(), abs_vals.end());
+
+    dis_bounds.first = -3*max_val;
+    dis_bounds.second = 3*max_val;
+
+    /*
     std::pair<double, double> trait_range = get_trait_range(t_range);
 
     if ((trait_range.first < 0) && (trait_range.second < 0)) {
@@ -35,7 +47,7 @@ boundaries bounds(std::vector<trait> t_range) {
     } else if ((trait_range.first > 0) && (trait_range.second > 0)) {
         dis_bounds.first = 0.5*trait_range.first;
         dis_bounds.second = 1.5*trait_range.second;
-    }
+    }*/
 
     return dis_bounds;
 
