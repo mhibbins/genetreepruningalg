@@ -11,7 +11,7 @@ extern struct option longopts[];
 class clade;
 class trait;
 
-std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<trait>> read_data(int argc, char *const argv[]);
+std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<double>, std::vector<trait>> read_data(int argc, char *const argv[]);
 
 std::ostream& operator<<(std::ostream &out, clade* my_clade);
 std::string clade_to_string(clade* my_clade);

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <tuple>
+#include <cctype>
 
 #include "io.hpp"
 #include "clade.hpp"
@@ -55,7 +56,7 @@ std::vector<std::string> simple_tokenizer(std::string s) {
   return line_vector;
 }
 
-std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<trait>> read_data(int argc, char *const argv[]){ //parses data from input file 
+std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<double>, std::vector<trait>> read_data(int argc, char *const argv[]){ //parses data from input file 
 
   input_parameters user_input = read_arguments(argc, argv); //reads command line arguments
   std::ifstream input_file(user_input.input_file_path); //gets input file argument
@@ -75,6 +76,7 @@ std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<trait>> re
 
   clade* sptree;
   std::vector<clade*> genetrees;
+  std::vector<double> freqs;
   std::vector<trait> species_traits;
 
   while (getline(input_file, line)) {
@@ -87,6 +89,10 @@ std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<trait>> re
 
     if (line.find("genetrees") != std::string::npos){
       header = "genetrees";
+    }
+
+    if (line.find("genetreefreqs") != std::string::npos) {
+      header = "genetreefreqs";
     }
 
     if (line.find("traits") != std::string::npos){
@@ -106,6 +112,14 @@ std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<trait>> re
       }
     }
 
+    if (header == "genetreefreqs") {
+      if (isdigit(line[0])) {
+        std::vector<std::string> line_vector = simple_tokenizer(line);
+	double freq = std::stod(line_vector[0]);
+	freqs.push_back(freq);
+      }
+    }
+
     if (header == "traits") {
       if (line.rfind("set", 0) == 0){
         trait species_trait = parse_traits(line);
@@ -114,5 +128,5 @@ std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<trait>> re
     }
   
   }
-  return {user_input, sptree, genetrees, species_traits};  
+  return {user_input, sptree, genetrees, freqs, species_traits};  
 }

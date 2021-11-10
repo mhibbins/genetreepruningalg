@@ -22,7 +22,7 @@ double infer_trait_likelihood_genetrees(clade* sptree, std::vector<clade*> genet
                              std::vector<double> genetree_freqs) {
 
     boundaries test_bounds = bounds(traits); //get upper and lower bounds of trait vector
-    std::set<double> test_branch_intervals = get_branch_intervals(sptree, genetrees); //get branch length intervals for matrix cache 
+    std::set<double> test_branch_intervals = get_branch_intervals(sptree, genetrees); //get branch length intervals for matrix cache
     matrix_cache cache(discretization_range); //inititialize matrix cache
     cache.precalculate_matrices(sigma_2, test_bounds, test_branch_intervals); //fill matrix cache 
     std::vector<double> dis_vals = get_discretized_traits(test_bounds);

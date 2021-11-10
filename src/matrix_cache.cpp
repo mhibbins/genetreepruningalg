@@ -85,6 +85,7 @@ void matrix_cache::precalculate_matrices(const double sigma2, const boundaries b
 
     for (double branch_length : branch_lengths)
     {
+	std::cout << branch_length << " ";
         matrix_cache_key key(bounds, branch_length);
         if (_matrix_cache.find(key) == _matrix_cache.end())
         {

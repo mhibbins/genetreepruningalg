@@ -11,18 +11,19 @@ sim_BM <- function(t1, t2, sigma2, n_traits) {
   var_covar <- matrix(c(var_all, cov_AB, 0,
                         cov_AB, var_all, 0,
                         0, 0, var_all), 
-                        nrow = 3, ncol = 3)
+                        ncol = 3, byrow = TRUE)
 
+    
+    ### Trait value simulations ### 
   
-  ### Trait value simulations ### 
+  traits <- mvrnorm(n = n_traits, mu = c(0, 0, 0), Sigma = var_covar, empirical = TRUE)
   
-  traits <- mvrnorm(n = n_traits, mu = c(0, 0, 0), Sigma = var_covar)
   return(traits)
   
 }
 
 allpos = FALSE
 
-test_traits <- sim_BM(0.6, 1.2, 10, 1)
+test_traits <- sim_BM(0.6, 1.2, 1, 100)
   
 print(test_traits)
