@@ -14,7 +14,7 @@ def read_results(out):
 
 
 estimate, likelihood = read_results(sys.stdin)
-treestruct, condition, replicate, = sys.argv[1], sys.argv[2], sys.argv[3]
+treestruct, condition, replicate = sys.argv[1], sys.argv[2], sys.argv[3]
 
 print(estimate, likelihood, treestruct, condition, replicate)
 
