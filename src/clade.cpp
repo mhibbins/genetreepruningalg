@@ -513,7 +513,7 @@ std::map<double, std::vector<double>> get_parent_child_lengths(const clade* gene
     return parent_child_map;
 }*/
 
-/*
+
 void clade::insert_between(clade* parent, clade* child, double sptime) {
 
     parent->remove_descendant(child); //remove child as descendant of parent 
@@ -523,16 +523,15 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
 
 }
 
-std::vector<clade*> insert_all_between(clade* sptree, clade* genetree, std::map<double, std::vector<double>>) { //function in progress 
+void clade::insert_all_between(clade* sptree, clade* genetree) { //function in progress 
 
     std::vector<clade*> inserted_genetrees;
     std::set<double> sptimes = sptree->get_speciation_times();
 
     for (auto it = sptimes.begin(); it != sptimes.end(); it++) {
-        for (auto it2 = genetree->reverse_level_begin(); it2 != genetree->reverse_level_end(); it2++) {
+        for (auto it2 = genetree->_insert_reverse_level_order.begin(); it2 != genetree->_insert_reverse_level_order.end(); it2++) {
 
-            const clade* gt_parent_const = *it2;
-            clade* gt_parent = gt_parent_const;
+            clade* gt_parent = *it2;
 
             double parent_length = gt_parent->get_branch_length();
 
@@ -542,16 +541,22 @@ std::vector<clade*> insert_all_between(clade* sptree, clade* genetree, std::map<
                 double child_length = gt_child->get_branch_length();
 
                 if (parent_length > *it > child_length) {
+                    std::cout << "Insert slice" << std::endl;
                     genetree->insert_between(gt_parent, gt_child, *it);
                 }
             }
         }
     }
-
 }
-*/
 
-int count_nodes(const clade* p_tree) { //debugging function to count nodes in a tree
+void clade::insert_between_all_trees(clade* sptree, std::vector<clade*> genetrees) {
+
+    for (auto it = genetrees.begin(); it != genetrees.end(); it++) {
+        insert_all_between(sptree, *it);
+    }
+}
+
+int count_nodes(clade* p_tree) { //debugging function to count nodes in a tree
     
     int node_counter = 0;
 
@@ -560,4 +565,15 @@ int count_nodes(const clade* p_tree) { //debugging function to count nodes in a 
     }
 
     return node_counter;
+}
+
+std::vector<int> count_nodes_all_trees(std::vector<clade*> p_trees) {
+
+    std::vector<int> node_counts;
+
+    for (auto it = p_trees.begin(); it != p_trees.end(); it++) {
+        node_counts.push_back(count_nodes(*it));
+    }
+
+    return node_counts;
 }
