@@ -77,10 +77,15 @@ void clade::remove_descendant(clade *p_descendant) {
 void clade::update_reverse_level_order()
 {
     _reverse_level_order.clear();
+    _insert_reverse_level_order.clear();
     std::stack<const clade*> stack;
     std::queue<const clade*> q;
+    std::stack<clade*> insert_stack;
+    std::queue<clade*> insert_q;
 
     q.push(this);
+    insert_q.push(this);
+
     while (!q.empty())
     {
         /* Dequeue node and make it current */
@@ -95,11 +100,32 @@ void clade::update_reverse_level_order()
         }
     }
 
+    while (!insert_q.empty())
+    {
+        /* Dequeue node and make it current */
+        auto current = insert_q.front();
+        insert_q.pop();
+        insert_stack.push(current);
+
+        for (auto i : current->_descendants)
+        {
+            /* Enqueue child */
+            insert_q.push(i);
+        }
+    }
+
     while (!stack.empty())
     {
         auto current = stack.top();
         stack.pop();
         _reverse_level_order.push_back(current);
+    }
+
+    while (!insert_stack.empty())
+    {
+        auto current = insert_stack.top();
+        insert_stack.pop();
+        _insert_reverse_level_order.push_back(current);
     }
 
     if (!is_root()) {
@@ -533,15 +559,14 @@ void clade::insert_all_between(clade* sptree, clade* genetree) { //function in p
 
             clade* gt_parent = *it2;
 
-            double parent_length = gt_parent->get_branch_length();
+            double parent_height = get_node_height(gt_parent);
 
             for (auto it3 = gt_parent->descendant_begin(); it3 != gt_parent->descendant_end(); it3++) {
 
                 clade* gt_child = *it3;
-                double child_length = gt_child->get_branch_length();
+                double child_height = get_node_height(gt_child);
 
-                if (parent_length > *it > child_length) {
-                    std::cout << "Insert slice" << std::endl;
+                if (parent_height > *it > child_height) {
                     genetree->insert_between(gt_parent, gt_child, *it);
                 }
             }
@@ -576,4 +601,16 @@ std::vector<int> count_nodes_all_trees(std::vector<clade*> p_trees) {
     }
 
     return node_counts;
+}
+
+double clade::get_node_height(clade* node) {
+
+    double node_height = 0;
+
+    for (auto it = node->_insert_reverse_level_order.begin(); it != node->_insert_reverse_level_order.end(); it++) {
+        clade* branch = *it;
+        node_height += branch->get_branch_length();
+    }
+
+    return node_height;
 }

@@ -123,6 +123,7 @@ public:
     void insert_between(clade* parent, clade* child, double sptime); 
     void insert_all_between(clade* sptree, clade* genetree);
     void insert_between_all_trees(clade* sptree, std::vector<clade*> genetrees);
+    double get_node_height(clade* node);
 };
 
 template<typename T>

@@ -115,8 +115,8 @@ std::tuple<input_parameters, clade*, std::vector<clade*>, std::vector<double>, s
     if (header == "genetreefreqs") {
       if (isdigit(line[0])) {
         std::vector<std::string> line_vector = simple_tokenizer(line);
-	double freq = std::stod(line_vector[0]);
-	freqs.push_back(freq);
+	      double freq = std::stod(line_vector[0]);
+	      freqs.push_back(freq);
       }
     }
 
