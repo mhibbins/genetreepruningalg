@@ -137,6 +137,7 @@ clade* parse_newick(std::string newick_string);
 std::set<double> get_branch_intervals(clade* sptree, std::vector<clade*> genetrees); //returns time intervals for matrix cache
 int count_nodes(clade* p_tree);
 std::vector<int> count_nodes_all_trees(std::vector<clade*> p_trees);
+void print_parent_daughter_nodes(clade* genetree);
 //std::map<double, std::vector<double>> get_parent_child_lengths(const clade* genetree);
 //inline clade* parse_newick(std::string newick_string) { return parse_newick(newick_string); }
 
