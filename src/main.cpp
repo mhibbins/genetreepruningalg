@@ -30,20 +30,28 @@ int main(int argc, char *const argv[]){
 
     //time slicer test
 
-    std::cout << "Before time slicing:" << std::endl;
-    std::vector<int> genetree_nodes_preslice = count_nodes_all_trees(genetrees);
-    print_parent_daughter_nodes(genetrees[0]);
+    clade* test_clade = new clade("sp1sp2", 0); //test_clade with two taxa
+    clade* sp1 = new clade("sp1", 0.6);
+    clade* sp2 = new clade("sp2", 0.6); 
+    test_clade->add_descendant(sp1);
+    test_clade->add_descendant(sp2);
+    std::vector<clade*> test_clade_v {test_clade};
 
+    std::cout << "Before time slicing:" << std::endl;
+    //std::vector<int> genetree_nodes_preslice = count_nodes_all_trees(test_clade_v);
     //for (int i = 0; i < genetree_nodes_preslice.size(); i++) {std::cout << genetree_nodes_preslice[i] << " ";}
+    //print_parent_daughter_nodes(test_clade);
     std::cout << std::endl;
+
     clade slice_test;
-    slice_test.insert_between_all_trees(sptree, genetrees);
+    slice_test.insert_between_all_trees(sptree, test_clade_v);
     
     std::cout << "After time slicing:" << std::endl;
-    //std::vector<int> genetree_nodes_postslice = count_nodes_all_trees(genetrees);
+    //std::vector<int> genetree_nodes_postslice = count_nodes_all_trees(test_clade_v);
     //for (int i = 0; i < genetree_nodes_postslice.size(); i++) {std::cout << genetree_nodes_postslice[i] << " ";}
+    //print_parent_daughter_nodes(test_clade);
 
-    print_parent_daughter_nodes(genetrees[0]);
+
     //inference test
 
     //std::unique_ptr<inference_optimizer_scorer> test_scorer(new sigma_optimizer_scorer(&sigma2_initial, sptree, genetrees, species_traits, genetreefreqs));

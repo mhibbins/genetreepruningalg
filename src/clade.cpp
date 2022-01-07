@@ -547,9 +547,12 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
     //std::string slice_name = "'" + parent_name + "slice" + child_name; + "'";
     //std::cout << slice_name << std::endl;
 
+    double parent_height = get_node_height(parent);
+    double new_clade_length = parent_height - sptime;
     parent->remove_descendant(child); //remove child as descendant of parent 
-    clade* c = new clade("c", sptime); //create new clade from timeslice 
+    clade* c = new clade("c", new_clade_length); //create new clade from timeslice 
     parent->add_descendant(c); // add new clade as descendant
+    child->_branch_length = sptime;
     c->add_descendant(child); //add child back as descendant of new node 
 
 }
@@ -557,7 +560,8 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
 void clade::insert_all_between(clade* sptree, clade* genetree) { //function in progress 
 
     std::vector<clade*> inserted_genetrees;
-    std::set<double> sptimes = sptree->get_speciation_times();
+    //std::set<double> sptimes = sptree->get_speciation_times();
+    std::set<double> sptimes {0.4}; //for testing
     std::vector<clade*> reverse_order_copy = genetree->_insert_reverse_level_order;
 
     for (auto it = sptimes.begin(); it != sptimes.end(); it++) {
@@ -618,7 +622,7 @@ double clade::get_node_height(clade* node) {
         node_height += branch->get_branch_length();
     }
 
-    return node_height;
+    return node_height/2;
 }
 
 void print_parent_daughter_nodes(clade* genetree) {
@@ -626,7 +630,7 @@ void print_parent_daughter_nodes(clade* genetree) {
     for (auto it = genetree->reverse_level_begin(); it != genetree->reverse_level_end(); it++) {
 
         const clade* node = *it;
-        std::cout << "Parent node is " << node->get_taxon_name() << " ";
+        std::cout << "Parent node is " << node->get_taxon_name() << " (length of subtending branch: " << node->get_branch_length() << ") ";
 
         for (auto it2 = node->descendant_begin(); it2 != node->descendant_end(); it2++) {
             const clade* desc = *it2;
