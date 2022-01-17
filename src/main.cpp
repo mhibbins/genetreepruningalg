@@ -36,19 +36,20 @@ int main(int argc, char *const argv[]){
     test_clade->add_descendant(sp1);
     test_clade->add_descendant(sp2);
     std::vector<clade*> test_clade_v {test_clade};
-    //std::cout << "Before time slicing:" << std::endl; 
+
+    std::cout << "Before time slicing:" << std::endl; 
     //std::vector<int> genetree_nodes_preslice = count_nodes_all_trees(test_clade_v);
     //for (int i = 0; i < genetree_nodes_preslice.size(); i++) {std::cout << genetree_nodes_preslice[i] << " ";}
-    //print_parent_daughter_nodes(test_clade);
-    //std::cout << std::endl;
+    print_parent_daughter_nodes(genetrees[0]);
+    std::cout << std::endl;
 
     clade slice_test;
-    slice_test.insert_between_all_trees(sptree, test_clade_v);
+    slice_test.insert_between_all_trees(sptree, genetrees);
     
-    //std::cout << "After time slicing:" << std::endl;
+    std::cout << "After time slicing:" << std::endl;
     //std::vector<int> genetree_nodes_postslice = count_nodes_all_trees(test_clade_v);
     //for (int i = 0; i < genetree_nodes_postslice.size(); i++) {std::cout << genetree_nodes_postslice[i] << " ";}
-    //print_parent_daughter_nodes(test_clade);
+    print_parent_daughter_nodes(genetrees[0]);
 
 
     //inference test

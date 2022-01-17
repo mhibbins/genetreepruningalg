@@ -552,6 +552,7 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
     parent->remove_descendant(child); //remove child as descendant of parent 
     clade* c = new clade("c", new_clade_length); //create new clade from timeslice 
     parent->add_descendant(c); // add new clade as descendant
+    c->_p_parent = parent;
     child->_branch_length = sptime;
     c->add_descendant(child); //add child back as descendant of new node 
 
