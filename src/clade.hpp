@@ -31,7 +31,6 @@ private:
     std::string _taxon_name;
     double _branch_length; // or lambda value
     int _lambda_index;
-    bool is_lambda_clade;
 
     std::vector<clade*> _descendants; // same as above
 
@@ -48,10 +47,10 @@ public:
     
     
     /* methods */
-    clade() : _p_parent(nullptr), _branch_length(0), _lambda_index(0), is_lambda_clade(false) {} // basic constructor
+    clade() : _p_parent(nullptr), _branch_length(0), _lambda_index(0) {} // basic constructor
 
     //! constructor giving taxon name and branch length
-    clade(std::string taxon_name, double length) : _taxon_name(taxon_name), _branch_length(length), _lambda_index(0), is_lambda_clade(false) {}
+    clade(std::string taxon_name, double length) : _taxon_name(taxon_name), _branch_length(length), _lambda_index(0) {}
 
     clade(const clade& c, clade *parent = nullptr, std::function<double(const clade& c)> branchlength_setter = nullptr);
 

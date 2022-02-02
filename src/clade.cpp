@@ -14,7 +14,6 @@ clade::clade(const clade& c, clade* parent, std::function<double(const clade& c)
     else
         _branch_length = c._branch_length;
     _lambda_index = c._lambda_index;
-    is_lambda_clade = c.is_lambda_clade;
     _descendants.resize(c._descendants.size());
     transform(c._descendants.begin(), c._descendants.end(), _descendants.begin(), [&](const clade* c) { return new clade(*c, this, branchlength_setter);});
 
@@ -35,19 +34,13 @@ const clade *clade::get_parent() const {
   return _p_parent; // memory address
 }
 
-double clade::get_branch_length() const
-{
-    if (is_lambda_clade)
-        throw std::runtime_error("Requested branch length from lambda tree");
+double clade::get_branch_length() const {
 
     return _branch_length;
 }
 
 int clade::get_lambda_index() const
 {
-    if (!is_lambda_clade)
-        throw std::runtime_error("Requested lambda index from branch length tree");
-
     return _lambda_index;
 }
 
@@ -547,7 +540,7 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
     //std::string slice_name = "'" + parent_name + "slice" + child_name; + "'";
     //std::cout << slice_name << std::endl;
 
-    double parent_height = get_node_height(parent);
+    double parent_height = parent->distance_from_root_to_tip();
     //std::cout << parent_height << std::endl;
     double new_clade_length = parent_height - sptime;
     parent->remove_descendant(child); //remove child as descendant of parent 
