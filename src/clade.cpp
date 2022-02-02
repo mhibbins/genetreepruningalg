@@ -548,6 +548,7 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
     //std::cout << slice_name << std::endl;
 
     double parent_height = get_node_height(parent);
+    //std::cout << parent_height << std::endl;
     double new_clade_length = parent_height - sptime;
     parent->remove_descendant(child); //remove child as descendant of parent 
     clade* c = new clade("c", new_clade_length); //create new clade from timeslice 
@@ -555,6 +556,11 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
     c->_p_parent = parent;
     child->_branch_length = sptime;
     c->add_descendant(child); //add child back as descendant of new node 
+    child->_p_parent = c;
+    double after_parent_height = parent->get_branch_length();
+    double after_c_height = c->get_branch_length();
+    double after_child_height = child->get_branch_length();
+    //std::cout << "After slicing, parent length is " << after_parent_height << ", sliced node length is " << after_c_height << ", and child node length is " << after_child_height << std::endl;
 
 }
 
@@ -617,13 +623,28 @@ std::vector<int> count_nodes_all_trees(std::vector<clade*> p_trees) {
 double clade::get_node_height(clade* node) {
 
     double node_height = 0;
+    std::set<double> lengths;
+    
 
-    for (auto it = node->_insert_reverse_level_order.begin(); it != node->_insert_reverse_level_order.end(); it++) {
-        clade* branch = *it;
-        node_height += branch->get_branch_length();
+    if (node->is_leaf()) {
+        node_height = node->get_branch_length();
+    }
+    else {
+        for (auto it = node->_insert_reverse_level_order.begin(); it != node->_insert_reverse_level_order.end(); it++) {
+            clade* branch = *it;
+            std::cout << branch->get_branch_length() << " ";
+            lengths.insert(branch->get_branch_length());
+        }
     }
 
-    return node_height/2;
+    for (auto it = lengths.begin(); it != lengths.end(); it++) {
+        //std::cout << *it << ' ';
+        node_height += *it;
+    }
+
+    //std::cout << node_height << ' ';
+
+    return node_height;
 }
 
 void print_parent_daughter_nodes(clade* genetree) {
