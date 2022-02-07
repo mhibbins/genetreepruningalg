@@ -513,8 +513,8 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
     parent->add_descendant(c); // add new clade as descendant
     c->_p_parent = parent;
     child->_branch_length = sptime;
-    c->add_descendant(child); //add child back as descendant of new node 
     child->_p_parent = c;
+    c->add_descendant(child); //add child back as descendant of new node 
     double after_parent_height = parent->get_branch_length();
     double after_c_height = c->get_branch_length();
     double after_child_height = child->get_branch_length();
@@ -606,6 +606,8 @@ double clade::get_node_height(clade* node) {
 }
 
 void print_parent_daughter_nodes(clade* genetree) {
+
+    //Prints parent-daughter relationships for debugging time slicer
 
     for (auto it = genetree->reverse_level_begin(); it != genetree->reverse_level_end(); it++) {
 

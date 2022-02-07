@@ -49,7 +49,7 @@ public:
     clade() : _p_parent(nullptr), _branch_length(0) {} // basic constructor
 
     //! constructor giving taxon name and branch length
-    clade(std::string taxon_name, double length) : _taxon_name(taxon_name), _branch_length(length) {}
+    clade(std::string taxon_name, double length) : _taxon_name(taxon_name), _branch_length(length), _p_parent(nullptr) {}
 
     clade(const clade& c, clade *parent = nullptr, std::function<double(const clade& c)> branchlength_setter = nullptr);
 
