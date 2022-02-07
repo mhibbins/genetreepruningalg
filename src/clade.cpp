@@ -13,7 +13,6 @@ clade::clade(const clade& c, clade* parent, std::function<double(const clade& c)
         _branch_length = branchlength_setter(c);
     else
         _branch_length = c._branch_length;
-    _lambda_index = c._lambda_index;
     _descendants.resize(c._descendants.size());
     transform(c._descendants.begin(), c._descendants.end(), _descendants.begin(), [&](const clade* c) { return new clade(*c, this, branchlength_setter);});
 
@@ -37,11 +36,6 @@ const clade *clade::get_parent() const {
 double clade::get_branch_length() const {
 
     return _branch_length;
-}
-
-int clade::get_lambda_index() const
-{
-    return _lambda_index;
 }
 
 /* Adds descendant to vector of descendants */
@@ -218,18 +212,6 @@ void print_clade_name(clade *clade) {
    std::cout << clade->get_taxon_name() << " (length of subtending branch: " << clade->get_branch_length() << ")" << "\n";
 }
 
-std::map<std::string, int> clade::get_lambda_index_map()
-{
-    std::map<std::string, int> node_name_to_lambda_index;
-    
-    auto fn = [&node_name_to_lambda_index](const clade *c) { 
-        node_name_to_lambda_index[c->get_taxon_name()] = c->get_lambda_index() - 1; // -1 is to adjust the index offset
-    };
-
-    apply_prefix_order(fn);
-    return node_name_to_lambda_index;
-}
-
 void clade::write_newick(std::ostream& ost, std::function<std::string(const clade *c)> textwriter) const
 {
     if (is_leaf()) {
@@ -374,23 +356,6 @@ std::set<double> get_branch_intervals(clade* sptree, std::vector<clade*> genetre
 
 
 } //returns time intervals for matrix cache
-
-void clade::validate_lambda_tree(const clade* p_lambda_tree) const
-{
-    auto g = [](std::set<std::string>& s, const clade* c) {
-        s.insert(c->get_taxon_name());
-    };
-    std::set<std::string> my_taxa;
-    apply_prefix_order([g, &my_taxa](const clade* c) { g(my_taxa, c);  });
-
-    std::set<std::string> lambda_taxa;
-    p_lambda_tree->apply_prefix_order([g, &lambda_taxa](const clade* c) { g(lambda_taxa, c);  });
-
-    if (my_taxa != lambda_taxa)
-    {
-        throw std::runtime_error("The lambda tree structure does not match that of the tree");
-    }
-}
 
 void clade::apply_to_descendants(const cladefunc& f) const {
 

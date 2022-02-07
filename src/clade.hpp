@@ -30,7 +30,6 @@ private:
     clade *_p_parent; // needs to be pointer; instance creates infinite loop
     std::string _taxon_name;
     double _branch_length; // or lambda value
-    int _lambda_index;
 
     std::vector<clade*> _descendants; // same as above
 
@@ -47,10 +46,10 @@ public:
     
     
     /* methods */
-    clade() : _p_parent(nullptr), _branch_length(0), _lambda_index(0) {} // basic constructor
+    clade() : _p_parent(nullptr), _branch_length(0) {} // basic constructor
 
     //! constructor giving taxon name and branch length
-    clade(std::string taxon_name, double length) : _taxon_name(taxon_name), _branch_length(length), _lambda_index(0) {}
+    clade(std::string taxon_name, double length) : _taxon_name(taxon_name), _branch_length(length) {}
 
     clade(const clade& c, clade *parent = nullptr, std::function<double(const clade& c)> branchlength_setter = nullptr);
 
@@ -74,9 +73,6 @@ public:
 
     double distance_from_root_to_tip() const;
 
-    //! In a multiple lambda situation, returns the index of the lambda associated with this particular clade
-    int get_lambda_index() const;
-
     //! returns descendant nodes of this clade that are not leaves
     std::vector<const clade*> find_internal_nodes() const;
 
@@ -89,15 +85,9 @@ public:
 
     void write_newick(std::ostream& ost, std::function<std::string(const clade *c)> textwriter) const;
 
-    std::map<std::string, int> get_lambda_index_map();
-
     //! Return a unique list of all brnach lengths for this clade and its descendants
     std::vector<double> get_branch_lengths() const;
     std::set<double> get_speciation_times() const; //returns tip branch lengths
-
-    /// Checks that the list of node names of the lambda tree matches this one
-    /// throw an exception if not
-    void validate_lambda_tree(const clade* p_lambda_tree) const;
 
     //! apply the function f to direct descendants. Does not automatically recurse.
     void apply_to_descendants(const cladefunc& f) const;
