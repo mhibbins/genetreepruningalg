@@ -234,6 +234,9 @@ void clade::write_newick(std::ostream& ost, std::function<std::string(const clad
 double clade::distance_from_root_to_tip() const
 {
     std::vector<double> candidates;
+
+    if (is_leaf()) {return 0;}
+
     apply_prefix_order([&candidates](const clade* c) {
         if (c->is_leaf())
         {
@@ -502,23 +505,20 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
 
     std::string parent_name = parent->get_taxon_name();
     std::string child_name = child->get_taxon_name();
-    //std::string slice_name = "'" + parent_name + "slice" + child_name; + "'";
-    //std::cout << slice_name << std::endl;
 
     double parent_height = parent->distance_from_root_to_tip();
-    //std::cout << parent_height << std::endl;
+    double child_height = child->distance_from_root_to_tip();
     double new_clade_length = parent_height - sptime;
     parent->remove_descendant(child); //remove child as descendant of parent 
     clade* c = new clade("c", new_clade_length); //create new clade from timeslice 
     parent->add_descendant(c); // add new clade as descendant
-    c->_p_parent = parent;
     child->_branch_length = sptime;
     child->_p_parent = c;
     c->add_descendant(child); //add child back as descendant of new node 
-    double after_parent_height = parent->get_branch_length();
-    double after_c_height = c->get_branch_length();
-    double after_child_height = child->get_branch_length();
-    //std::cout << "After slicing, parent length is " << after_parent_height << ", sliced node length is " << after_c_height << ", and child node length is " << after_child_height << std::endl;
+    double after_parent_length = parent->get_branch_length();
+    double after_c_length = c->get_branch_length();
+    double after_child_length = child->get_branch_length();
+    //std::cout << "After slicing, parent length is " << after_parent_length << ", sliced node length is " << after_c_length << ", and child node length is " << after_child_length << std::endl;
 
 }
 
@@ -533,14 +533,14 @@ void clade::insert_all_between(clade* sptree, clade* genetree) { //function in p
         for (auto it2 = reverse_order_copy.begin(); it2 != reverse_order_copy.end(); it2++) {
 
             clade* gt_parent = *it2;
-            double parent_height = get_node_height(gt_parent);
+            double parent_height = gt_parent->distance_from_root_to_tip();
             std::vector<clade*> desc_copy = gt_parent->_descendants;
 
             for (auto it3 = desc_copy.begin(); it3 != desc_copy.end(); it3++) {
 
                 clade* gt_child = *it3;
-                double child_height = get_node_height(gt_child); 
-
+                double child_height = gt_child->distance_from_root_to_tip(); 
+                std::cout << "Parent height is " << parent_height << " and child height is " << child_height << std::endl;
                 if (parent_height > *it > child_height) {
                     genetree->insert_between(gt_parent, gt_child, *it);
                 }

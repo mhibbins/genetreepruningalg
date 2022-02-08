@@ -42,25 +42,25 @@ int main(int argc, char *const argv[]){
     std::cout << "Before time slicing:" << std::endl; 
     std::cout << "Two-species test tree:" << std::endl;
     std::cout << std::endl;
-    print_parent_daughter_nodes(test_clade);
+    //print_parent_daughter_nodes(test_clade);
     std::cout << std::endl;
     std::cout << "Three-species test tree:";
     std::cout << std::endl;
-    print_parent_daughter_nodes(three_taxon_test[0]);
+    //print_parent_daughter_nodes(three_taxon_test[0]);
     std::cout << std::endl;
     std::cout << std::endl;
 
     clade slice_test;
-    slice_test.insert_between_all_trees(sptree, test_clade_v);
+    //slice_test.insert_between_all_trees(sptree, test_clade_v);
     slice_test.insert_between_all_trees(sptree, three_taxon_test);
     
     std::cout << "After time slicing:" << std::endl;
     std::cout << "Two-species test tree:" << std::endl;
     std::cout << std::endl;
-    print_parent_daughter_nodes(test_clade);
+    //print_parent_daughter_nodes(test_clade);
     std::cout << std::endl;
     std::cout << "Three-species test tree:" << std::endl;
-    print_parent_daughter_nodes(three_taxon_test[0]);
+    //print_parent_daughter_nodes(three_taxon_test[0]);
     std::cout << std::endl;
 
 
