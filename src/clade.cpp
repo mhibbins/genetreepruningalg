@@ -233,16 +233,15 @@ void clade::write_newick(std::ostream& ost, std::function<std::string(const clad
 
 double clade::distance_from_root_to_tip() const
 {
+    if (is_leaf()) {return 0;}
     std::vector<double> candidates;
 
-    if (is_leaf()) {return 0;}
-
-    apply_prefix_order([&candidates](const clade* c) {
+    apply_prefix_order([&candidates, this](const clade* c) {
         if (c->is_leaf())
         {
             auto p = c;
             double dist = 0;
-            while (p)
+            while (p && p != this)
             {
                 dist += p->get_branch_length();
                 p = p->get_parent();
@@ -508,6 +507,7 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
 
     double parent_height = parent->distance_from_root_to_tip();
     double child_height = child->distance_from_root_to_tip();
+    std::cout << "parent height is " << parent_height << " and child height is " << child_height << std::endl;
     double new_clade_length = parent_height - sptime;
     parent->remove_descendant(child); //remove child as descendant of parent 
     clade* c = new clade("c", new_clade_length); //create new clade from timeslice 
@@ -540,7 +540,6 @@ void clade::insert_all_between(clade* sptree, clade* genetree) { //function in p
 
                 clade* gt_child = *it3;
                 double child_height = gt_child->distance_from_root_to_tip(); 
-                std::cout << "Parent height is " << parent_height << " and child height is " << child_height << std::endl;
                 if (parent_height > *it > child_height) {
                     genetree->insert_between(gt_parent, gt_child, *it);
                 }
