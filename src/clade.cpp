@@ -502,12 +502,7 @@ std::map<double, std::vector<double>> get_parent_child_lengths(const clade* gene
 
 void clade::insert_between(clade* parent, clade* child, double sptime) {
 
-    std::string parent_name = parent->get_taxon_name();
-    std::string child_name = child->get_taxon_name();
-
     double parent_height = parent->distance_from_root_to_tip();
-    double child_height = child->distance_from_root_to_tip();
-    std::cout << "parent height is " << parent_height << " and child height is " << child_height << std::endl;
     double new_clade_length = parent_height - sptime;
     parent->remove_descendant(child); //remove child as descendant of parent 
     clade* c = new clade("c", new_clade_length); //create new clade from timeslice 
@@ -515,35 +510,43 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
     child->_branch_length = sptime;
     child->_p_parent = c;
     c->add_descendant(child); //add child back as descendant of new node 
-    double after_parent_length = parent->get_branch_length();
-    double after_c_length = c->get_branch_length();
-    double after_child_length = child->get_branch_length();
-    //std::cout << "After slicing, parent length is " << after_parent_length << ", sliced node length is " << after_c_length << ", and child node length is " << after_child_length << std::endl;
 
+}
+
+bool clade::insert_between_once(double sptime) {
+
+    for (auto it2 = this->_insert_reverse_level_order.begin(); it2 != this->_insert_reverse_level_order.end(); it2++) {
+            
+        clade* gt_parent = *it2;
+        double parent_height = gt_parent->distance_from_root_to_tip();
+
+        for (auto it3 = gt_parent->_descendants.begin(); it3 != gt_parent->_descendants.end(); it3++) {
+
+            clade* gt_child = *it3;
+            double child_height = gt_child->distance_from_root_to_tip(); 
+
+            if (parent_height > sptime > child_height) {
+                std::cout << parent_height << " " << sptime << " " << child_height << std::endl;
+                this->insert_between(gt_parent, gt_child, sptime);
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 void clade::insert_all_between(clade* sptree, clade* genetree) { //function in progress 
 
-    std::vector<clade*> inserted_genetrees;
     //std::set<double> sptimes = sptree->get_speciation_times();
     std::set<double> sptimes {0.4}; //for testing
     std::vector<clade*> reverse_order_copy = genetree->_insert_reverse_level_order;
 
     for (auto it = sptimes.begin(); it != sptimes.end(); it++) {
-        for (auto it2 = reverse_order_copy.begin(); it2 != reverse_order_copy.end(); it2++) {
 
-            clade* gt_parent = *it2;
-            double parent_height = gt_parent->distance_from_root_to_tip();
-            std::vector<clade*> desc_copy = gt_parent->_descendants;
+        bool done = false;
 
-            for (auto it3 = desc_copy.begin(); it3 != desc_copy.end(); it3++) {
-
-                clade* gt_child = *it3;
-                double child_height = gt_child->distance_from_root_to_tip(); 
-                if (parent_height > *it > child_height) {
-                    genetree->insert_between(gt_parent, gt_child, *it);
-                }
-            }
+        while (!done) {
+            done = genetree->insert_between_once(*it);
         }
     }
 }
@@ -577,32 +580,6 @@ std::vector<int> count_nodes_all_trees(std::vector<clade*> p_trees) {
     return node_counts;
 }
 
-double clade::get_node_height(clade* node) {
-
-    double node_height = 0;
-    std::set<double> lengths;
-    
-
-    if (node->is_leaf()) {
-        node_height = node->get_branch_length();
-    }
-    else {
-        for (auto it = node->_insert_reverse_level_order.begin(); it != node->_insert_reverse_level_order.end(); it++) {
-            clade* branch = *it;
-            std::cout << branch->get_branch_length() << " ";
-            lengths.insert(branch->get_branch_length());
-        }
-    }
-
-    for (auto it = lengths.begin(); it != lengths.end(); it++) {
-        //std::cout << *it << ' ';
-        node_height += *it;
-    }
-
-    //std::cout << node_height << ' ';
-
-    return node_height;
-}
 
 void print_parent_daughter_nodes(clade* genetree) {
 
@@ -611,11 +588,15 @@ void print_parent_daughter_nodes(clade* genetree) {
     for (auto it = genetree->reverse_level_begin(); it != genetree->reverse_level_end(); it++) {
 
         const clade* node = *it;
-        std::cout << "Parent node is " << node->get_taxon_name() << " (length of subtending branch: " << node->get_branch_length() << ") ";
 
-        for (auto it2 = node->descendant_begin(); it2 != node->descendant_end(); it2++) {
-            const clade* desc = *it2;
-            std::cout << " Child node is " << desc->get_taxon_name() << " (length of subtending branch: " << desc->get_branch_length() << ") ";
+        if (!node->is_leaf()) {
+            std::cout << "Parent node is " << node->get_taxon_name() << " (node height: " << node->distance_from_root_to_tip() << ") ";
+
+            for (auto it2 = node->descendant_begin(); it2 != node->descendant_end(); it2++) {
+                const clade* desc = *it2;
+                std::cout << " Child node is " << desc->get_taxon_name() << " (node height: " << desc->distance_from_root_to_tip() << ") ";
+            }
+
         }
 
         std::cout << "\n";

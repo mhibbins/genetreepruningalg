@@ -44,7 +44,7 @@ int main(int argc, char *const argv[]){
     std::cout << std::endl;
     print_parent_daughter_nodes(test_clade);
     std::cout << std::endl;
-    std::cout << "Three-species test tree:";
+    //std::cout << "Three-species test tree:";
     std::cout << std::endl;
     //print_parent_daughter_nodes(three_taxon_test[0]);
     std::cout << std::endl;
@@ -59,7 +59,7 @@ int main(int argc, char *const argv[]){
     std::cout << std::endl;
     print_parent_daughter_nodes(test_clade);
     std::cout << std::endl;
-    std::cout << "Three-species test tree:" << std::endl;
+    //std::cout << "Three-species test tree:" << std::endl;
     //print_parent_daughter_nodes(three_taxon_test[0]);
     std::cout << std::endl;
 
