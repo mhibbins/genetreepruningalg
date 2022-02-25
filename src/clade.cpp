@@ -509,8 +509,9 @@ void clade::insert_between(clade* parent, clade* child, double sptime) {
     clade* c = new clade("c", new_clade_length); //create new clade from timeslice 
     parent->add_descendant(c); // add new clade as descendant
     child->_branch_length = sptime - child_height;
-    child->_p_parent = c;
     c->add_descendant(child); //add child back as descendant of new node 
+    child->_p_parent = c;
+    
 
 }
 
@@ -538,8 +539,8 @@ bool clade::insert_between_once(double sptime) {
 
 void clade::insert_all_between(clade* sptree, clade* genetree) { //function in progress 
 
-    //std::set<double> sptimes = sptree->get_speciation_times();
-    std::set<double> sptimes {1.2}; //for testing
+    std::set<double> sptimes = sptree->get_speciation_times();
+    //std::set<double> sptimes {0.6}; //for testing
 
     for (auto it = sptimes.rbegin(); it != sptimes.rend(); it++) {
 
