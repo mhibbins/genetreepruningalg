@@ -500,14 +500,15 @@ std::map<double, std::vector<double>> get_parent_child_lengths(const clade* gene
 }*/
 
 
-void clade::insert_between(clade* parent, clade* child, double sptime) {
+void clade::insert_between(clade* child, double sptime) {
 
-    double parent_height = parent->distance_from_root_to_tip();
+    double parent_height = this->distance_from_root_to_tip();
     double child_height = child->distance_from_root_to_tip();
     double new_clade_length = parent_height - sptime;
-    parent->remove_descendant(child); //remove child as descendant of parent 
+    this->remove_descendant(child); //remove child as descendant of parent 
     clade* c = new clade("c", new_clade_length); //create new clade from timeslice 
-    parent->add_descendant(c); // add new clade as descendant
+    this->add_descendant(c); // add new clade as descendant
+    c->_p_parent = this;
     child->_branch_length = sptime - child_height;
     c->add_descendant(child); //add child back as descendant of new node 
     child->_p_parent = c;
@@ -528,8 +529,8 @@ bool clade::insert_between_once(double sptime) {
             double child_height = gt_child->distance_from_root_to_tip(); 
 
             if ((parent_height > sptime) && (sptime > child_height)) {
-                std::cout << parent_height << " " << sptime << " " << child_height << std::endl;
-                this->insert_between(gt_parent, gt_child, sptime);
+                //std::cout << parent_height << " " << sptime << " " << child_height << std::endl;
+                gt_parent->insert_between(gt_child, sptime);
                 return false;
             }
         }
@@ -539,10 +540,10 @@ bool clade::insert_between_once(double sptime) {
 
 void clade::insert_all_between(clade* sptree, clade* genetree) { //function in progress 
 
-    std::set<double> sptimes = sptree->get_speciation_times();
-    //std::set<double> sptimes {0.6}; //for testing
+    //std::set<double> sptimes = sptree->get_speciation_times();
+    std::set<double> sptimes {0.6, 1.2}; //for testing
 
-    for (auto it = sptimes.rbegin(); it != sptimes.rend(); it++) {
+    for (auto it = sptimes.begin(); it != sptimes.end(); it++) {
 
         bool done = false;
 
