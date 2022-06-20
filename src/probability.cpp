@@ -6,7 +6,7 @@
 #include "traits.hpp"
 #include "matrix_cache.hpp"
 
-int discretization_range = 100;
+int discretization_range = 300;
 
 double bm_prob(double val1, double val2, double t, double sigma_2) {
 
@@ -90,7 +90,7 @@ std::vector<double> pos_bounds(double traitval, int dis_size, boundaries bounds)
         X[ix] = 1 - ux;
     }
 
-    for (int i = 0; i <= X.size(); i++) { //I think this does the same thing as the lambda expression in CAGEE's DiffMat.cpp, but not 100%
+    for (int i = 0; i < X.size(); i++) { //I think this does the same thing as the lambda expression in CAGEE's DiffMat.cpp, but not 100%
         X[i] = X[i] * (dis_size-1) / double(bounds.second - bounds.first); 
     }
 

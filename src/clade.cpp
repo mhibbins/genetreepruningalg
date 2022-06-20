@@ -540,8 +540,8 @@ bool clade::insert_between_once(double sptime) {
 
 void clade::insert_all_between(clade* sptree, clade* genetree) { //function in progress 
 
-    //std::set<double> sptimes = sptree->get_speciation_times();
-    std::set<double> sptimes {0.6, 1.2}; //for testing
+    std::set<double> sptimes = sptree->get_speciation_times();
+    //std::set<double> sptimes {0.6, 1.2}; //for testing
 
     for (auto it = sptimes.begin(); it != sptimes.end(); it++) {
 
