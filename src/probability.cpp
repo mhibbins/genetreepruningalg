@@ -32,22 +32,8 @@ boundaries bounds(std::vector<trait> t_range) {
 
     double max_val = *std::max_element(abs_vals.begin(), abs_vals.end());
 
-    dis_bounds.first = -3*max_val;
-    dis_bounds.second = 3*max_val;
-
-    /*
-    std::pair<double, double> trait_range = get_trait_range(t_range);
-
-    if ((trait_range.first < 0) && (trait_range.second < 0)) {
-        dis_bounds.first = 1.5*trait_range.first;
-        dis_bounds.second = 0.5*trait_range.second;
-    } else if ((trait_range.first < 0) && (trait_range.second > 0)) {
-        dis_bounds.first = 1.5*trait_range.first;
-        dis_bounds.second = 1.5*trait_range.second;
-    } else if ((trait_range.first > 0) && (trait_range.second > 0)) {
-        dis_bounds.first = 0.5*trait_range.first;
-        dis_bounds.second = 1.5*trait_range.second;
-    }*/
+    dis_bounds.first = -2*max_val;
+    dis_bounds.second = 2*max_val;
 
     return dis_bounds;
 

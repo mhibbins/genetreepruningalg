@@ -480,25 +480,6 @@ clade* parse_newick(std::string newick_string) {
     return p_root_clade;
 }
 
-/*
-std::map<double, std::vector<double>> get_parent_child_lengths(const clade* genetree)
-{
-    std::map<double, std::vector<double>> parent_child_map;
-
-    for (auto it = genetree->reverse_level_begin(); it != genetree->reverse_level_end(); it++) {
-
-        const clade* gt_parent = *it;
-
-        for (auto it2 = gt_parent->descendant_begin(); it2 != gt_parent->descendant_end(); it2++) {
-
-            const clade* gt_child = *it;
-            parent_child_map[gt_parent->get_branch_length()].push_back(gt_child->get_branch_length());
-        }
-    }
-
-    return parent_child_map;
-}*/
-
 
 void clade::insert_between(clade* child, double sptime) {
 
