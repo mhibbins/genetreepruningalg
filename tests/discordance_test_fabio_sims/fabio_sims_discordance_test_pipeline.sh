@@ -19,7 +19,7 @@ Rscript simulators/fabio_sim_condition5.R 2>/dev/null | python3 input_makers/mak
 
 echo "Begin pruning algorithm inferences.."
  
-for i in {1..100}
+for i in {1..100};
 do
 	echo "Doing condition 1 species tree inference..."
 	../../src/test.exe condition1_test_input_$i.txt sptree | python3 parse_discordance_test_output.py sptree condition1 $i >> fabiosim_discordance_test_results.txt

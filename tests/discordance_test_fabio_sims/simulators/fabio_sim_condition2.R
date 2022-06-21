@@ -16,7 +16,7 @@ sim_BM_fabio <- function(t1, t2, N, n_traits) {
 
   cov_nonsister <- (1/3)*exp(-tau/(2*N))
 
-  var = t1/10000 + (1 - exp(-tau/(2*N)))*(tau/(2*N) + 1) + 
+  var = t1/(2*N) + (1 - exp(-tau/(2*N)))*(tau/(2*N) + 1) + 
 	  exp(-tau/(2*N))*(tau/(2*N) + 1 + 1/3)
 
   var_covar <- scale*matrix(c(var, cov_AB, cov_nonsister,
