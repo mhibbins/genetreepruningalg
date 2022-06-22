@@ -26,7 +26,7 @@ def write_input(traits, file_prefix):
             inputfile.write("end;\n")
             inputfile.write("\n")
             inputfile.write("begin genetrees;\n")
-            inputfile.write("(sp2:2.785,(sp3:0.747,sp4:0.747):2.038);\n")
+            inputfile.write("(sp2:2.785,(sp3:0.748,sp4:0.748):2.037);\n")
             inputfile.write("(sp2:3.118,(sp3:2.118,sp4:2.118):1.0);\n")
             inputfile.write("(sp3:3.118,(sp2:2.118,sp4:2.118):1.0);\n")
             inputfile.write("(sp4:3.118,(sp2:2.118,sp3:2.118):1.0);\n")
