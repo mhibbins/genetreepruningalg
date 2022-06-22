@@ -8,7 +8,7 @@ sim_BM_fabio <- function(t1, t2, N, n_traits) {
   ### Theory ###
   
   tau = t2 - t1
-  scale = 2*N*0.00002 #assuming constant mu*simga2
+  scale = 2*N*0.0002 #assuming constant mu*simga2
   
   cov_AB <- (1 - exp(-tau/(2*N)))*(1 + 
 		(tau/(2*N) - (1 - (tau/(2*N))/(exp(tau/(2*N))-1)))) + 
@@ -32,6 +32,6 @@ sim_BM_fabio <- function(t1, t2, N, n_traits) {
   
 }
 
-test_traits <- sim_BM_fabio(4000, 50000, 90000, 100)
+test_traits <- sim_BM_fabio(4000, 50000, 14000, 100)
   
 print(test_traits)
