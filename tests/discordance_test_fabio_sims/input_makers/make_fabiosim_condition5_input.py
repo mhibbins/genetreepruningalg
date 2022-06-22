@@ -22,7 +22,7 @@ def write_input(traits, file_prefix):
 
             inputfile.write("NEXUS\n")
             inputfile.write("begin sptree;\n")
-            inputfile.write("(sp2:1.785,(sp3:0.142,sp4:0.142):1.642);\n")
+            inputfile.write("(sp2:1.785,(sp3:0.142,sp4:0.142):1.643);\n")
             inputfile.write("end;\n")
             inputfile.write("\n")
             inputfile.write("begin genetrees;\n")
