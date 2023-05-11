@@ -1,6 +1,6 @@
 # Gene tree pruning algorithm
 
-Code related to the implementation of Felsenstein's pruning algorithm over a gene tree set, as described in Hibbins et al. 2022. The primary function related to our new implementation can be found beginning on line 140 of `src/probability.cpp`. Much of the C++ source code in `src/` is drawn from previous implementations in [CAFE](https://github.com/hahnlab/CAFE) and [CAGEE](https://github.com/hahnlab/CAGEE). 
+Code related to the implementation of Felsenstein's pruning algorithm over a gene tree set, as described in Hibbins et al. 2023. The primary function related to our new implementation can be found beginning on line 140 of `src/probability.cpp`. Much of the C++ source code in `src/` is drawn from previous implementations in [CAFE](https://github.com/hahnlab/CAFE) and [CAGEE](https://github.com/hahnlab/CAGEE). 
 
 ## Installation 
 
